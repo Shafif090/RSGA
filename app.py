@@ -12,4 +12,4 @@ def home():
 
 @app.route("/register")
 def home():
-    return render_template("login.html")
+    return render_template("register.html")
