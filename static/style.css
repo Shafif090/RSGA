@@ -1,57 +1,145 @@
-@import url('https://fonts.cdnfonts.com/css/blanka');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-
+@import url("https://fonts.cdnfonts.com/css/blanka");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+}
 
 body {
-    background-color: #131314;
-    margin: 0;
+  background-color: #131314;
+  font-size: 18px;
+  font-family: "Poppins", serif;
 }
 
-/* Navbar */
-.navbar {
-    background-color: #0d1542;
-    padding: 8px 28px 24px;
-    color: white;
-    justify-content: space-between;
-    font-size: 1.4rem;
+nav {
+  padding: 0 20px;
+  height: 70px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
-.navbar-brand {
-    font-family: 'Blanka';
-    font-size: 46px;
-    color: white;
+nav .logo {
+  margin-top: -14px;
+  margin-right: auto;
+  padding: 0 10px;
+  font-size: 36px;
+  font-family: "Blanka";
 }
-.navbar-brand:hover{
-    color: white;
+nav .links-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
-.navbar-nav .nav-link {
-    color: white;
-    font-family: "Poppins", serif;
-    text-decoration: none;
-    margin-top: 12px;
-    transition: color 0.3s ease;
+nav .nav-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #303030;
+  padding: 14px 20px;
+  border-radius: 22px;
 }
-.navbar-nav .nav-link:hover {
-    color: #C4C4C4;
+nav .nav-link {
+  margin: 0 10px;
+  color: #F0F0F0;
+  text-decoration: none;
 }
-.navbar-toggler {
-    border: 2px solid white;
-    border-radius: 10px;
+nav .nav-link:hover {
+  color: #006AFF;
+  transition: 0.3s;
 }
-.navbar-toggler-icon {
-    background-image: url("data:image/svg+xml;charset=UTF8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba%28255, 255, 255, 1%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+nav .auth {
+  width: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  position: absolute;
+  right: 0;
 }
-.navbar .auth-buttons {
-    font-family: "Poppins", serif;
+nav a {
+  padding-right: 18px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #F0F0F0;
 }
-.navbar .auth-buttons .login,
-.navbar .auth-buttons .register,
-.navbar .auth-buttons .logout {
-    margin-top: 12px;
-    padding: 8px 18px;
-    border: 1px solid white;
-    border-radius: 15px;
-    text-decoration: none;
-    color: white;
-    text-align: center;
-    font-size: 1.4rem;
+nav a:hover {
+  color: #006AFF;
+  transition: 0.3s;
 }
+nav .login, nav .register, nav .logout {
+  font-size: 18px;
+  padding: 7px 15px;
+  margin-right: 15px;
+  border: solid 1px #006AFF;
+  border-radius: 12px;
+  text-decoration: none;
+  background-color: #0F1016;
+}
+nav .login:hover, nav .register:hover, nav .logout:hover {
+  color: #F0F0F0;
+  background-color: #006AFF;
+  transition: 0.3s;
+}
+nav svg {
+  fill: #F0F0F0;
+}
+nav #sidebar-active {
+  display: none;
+}
+nav .open-sidebar, nav .close-sidebar {
+  display: none;
+}
+
+@media (max-width: 865px) {
+  nav .links-container {
+    padding: 20px 0;
+    flex-direction: column;
+    align-items: flex-start;
+    display: flex;
+    justify-content: flex-start;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    z-index: 10;
+    width: 300px;
+    height: 100%;
+    background-color: #0F1016;
+    transition: 0.5s ease-out;
+  }
+  nav .nav-links {
+    all: unset;
+  }
+  nav a {
+    margin: 0 10px;
+    box-sizing: border-box;
+    height: auto;
+    width: 100%;
+    padding: 20px 30px;
+    justify-content: flex-start;
+  }
+  nav .auth {
+    all: unset;
+  }
+  nav .login, nav .register, nav .logout {
+    padding: 10px 18px;
+    width: auto;
+    margin: 15px 40px;
+  }
+  nav .open-sidebar, nav .close-sidebar {
+    padding: 0 35px;
+    display: block;
+  }
+  nav #sidebar-active:checked ~ .links-container {
+    right: 0;
+  }
+  nav #sidebar-active:checked ~ #overlay {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+  }
+}/*# sourceMappingURL=style.css.map */

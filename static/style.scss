@@ -1,0 +1,166 @@
+@import url('https://fonts.cdnfonts.com/css/blanka');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+$background-color: #131314;
+$color-1: #0F1016;
+$color-2: #303030;
+$text-color: #F0F0F0;
+$accent-color: #006AFF;
+
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    background-color: $background-color;
+    font-size: 18px;
+    font-family: "Poppins", serif;
+}
+
+
+nav {
+    padding: 0 20px;
+    height: 70px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .logo {
+        margin-top: -14px;
+        margin-right: auto;
+        padding: 0 10px;
+        font-size: 36px;
+        font-family: "Blanka";
+    }
+    .links-container {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .nav-links {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $color-2;
+        padding: 14px 20px;
+        border-radius: 22px;
+    }
+    
+    .nav-link {
+        margin: 0 10px;
+        color: $text-color;
+        text-decoration: none;
+    
+        &:hover {
+            color: $accent-color;
+            transition: 0.3s;
+        }
+    }
+    
+
+    .auth {
+        width: auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        position: absolute;
+        right: 0;
+    }
+
+    a {
+        padding-right: 18px;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: $text-color;
+        
+    }
+    a:hover {
+        color: $accent-color;
+        transition: .3s;
+    }
+
+    .login, .register, .logout  {
+        font-size: 18px;
+        padding: 7px 15px;
+        margin-right: 15px;
+        border: solid 1px $accent-color;
+        border-radius: 12px;
+        text-decoration: none;
+        background-color: $color-1;
+    }
+    .login:hover, .register:hover, .logout:hover {
+        color: $text-color;
+        background-color: $accent-color;
+        transition: .3s;
+    }
+    
+    svg {
+        fill: $text-color;
+    }
+    #sidebar-active {
+        display: none;
+    }
+    .open-sidebar, .close-sidebar {
+        display: none;
+    }
+}
+
+@media(max-width: 865px) {
+    nav {
+        .links-container {
+            padding: 20px 0;
+            flex-direction: column;
+            align-items: flex-start;
+            display: flex;
+            justify-content: flex-start;
+    
+            position: fixed;
+            top: 0;
+            right: -100%;
+            z-index: 10;
+            width: 300px;
+            height: 100%;
+            background-color: $color-1;
+            transition: 0.5s ease-out;
+        }
+        .nav-links {
+            all: unset; 
+        }
+
+        a {
+            margin: 0 10px;
+            box-sizing: border-box;
+            height: auto;
+            width: 100%;
+            padding: 20px 30px;
+            justify-content: flex-start;
+        }
+        .auth {
+            all: unset;
+        }
+        .login, .register, .logout  {
+            padding: 10px 18px;
+            width: auto;
+            margin: 15px 40px;
+        }
+        .open-sidebar, .close-sidebar {
+            padding: 0 35px;
+            display: block;
+        }
+        #sidebar-active:checked ~ .links-container {
+            right: 0;
+        }
+        #sidebar-active:checked ~ #overlay {
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 5;
+        }
+    }
+}
