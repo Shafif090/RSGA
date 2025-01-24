@@ -37,7 +37,8 @@ nav .nav-links {
   justify-content: center;
   align-items: center;
   background-color: #303030;
-  padding: 14px 20px;
+  padding: 14px 16px;
+  margin-right: 125px;
   border-radius: 22px;
 }
 nav .nav-link {
@@ -92,7 +93,7 @@ nav .open-sidebar, nav .close-sidebar {
   display: none;
 }
 
-@media (max-width: 865px) {
+@media (max-width: 955px) {
   nav .links-container {
     padding: 20px 0;
     flex-direction: column;
