@@ -15,15 +15,15 @@ $laptop: 1024px;
 //importing fonts
 @font-face{
     font-family: 'blanka';
-    src: url('../Blanka-Regular.otf') format('opentype');
+    src: url('../media/fonts/Blanka-Regular.otf') format('opentype');
 }
 @font-face{
     font-family: 'poppins';
-    src: url('../Poppins-Regular.ttf') format('truetype');
+    src: url('../media/fonts/Poppins-Regular.ttf') format('truetype');
 }
 @font-face{
     font-family: 'garnet';
-    src: url('../GarnetCapitals-Regular.ttf') format('truetype');
+    src: url('../media/fonts/GarnetCapitals-Regular.ttf') format('truetype');
 }
 
 button{
