@@ -1,0 +1,119 @@
+body {
+  background-color: #131314;
+  color: white;
+  font-family: "poppins";
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+nav {
+  display: none;
+}
+
+.RSGAtext {
+  position: absolute;
+  left: calc(100vw - 130px);
+  top: 0;
+  height: 100vh;
+  width: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.RSGAtext h1 {
+  font-family: "blanka";
+  font-weight: 200;
+  transform: rotate(-90deg);
+  font-size: 230px;
+  opacity: 0.38;
+}
+
+.shadow {
+  position: absolute;
+  height: 100%;
+  right: 0px;
+  box-shadow: 0px 10px 35px 50px rgba(0, 0, 0, 0.77);
+}
+
+.rect {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background-color: #29313f;
+  border-radius: 20px;
+  bottom: 30px;
+  left: calc(50% + 10px);
+  animation: rectAnim 20s infinite;
+}
+
+@keyframes rectAnim {
+  0% {
+    transform: rotate(70deg);
+    border-radius: 20px;
+  }
+  25% {
+    transform: rotate(140deg);
+    border-radius: 0px;
+  }
+  50% {
+    transform: rotate(-15deg);
+    border-radius: 10px;
+  }
+  75% {
+    transform: rotate(15deg);
+    border-radius: 100px;
+  }
+  100% {
+    transform: rotate(70deg);
+    border-radius: 20px;
+  }
+}
+form {
+  position: absolute;
+  top: 40px;
+  left: 70px;
+  height: calc(100vh - 120px);
+  width: calc(50% - 80px);
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(6.5px);
+  -webkit-backdrop-filter: blur(6.5px);
+  border-radius: 10px;
+  border: 2px solid #303030;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+form h1 {
+  padding-top: 30px;
+  font-size: 40px;
+  background: linear-gradient(to right, #809BC8 0%, #A76FB8 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  text-transform: uppercase;
+  -webkit-text-fill-color: transparent;
+}
+form label {
+  transition: background-color 0.3s ease-in-out;
+  opacity: 0.85;
+  font-size: 15px;
+}
+form input {
+  width: 100%;
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.842);
+  border-radius: 5px;
+  color: white;
+  font-family: "poppins";
+}
+form .institution select.grade, form .institution select.shift {
+  background-color: transparent;
+  border: 2px solid white;
+  border-radius: 10px;
+  font-family: "poppins";
+  font-size: 16px;
+  color: rgb(192, 192, 192);
+}/*# sourceMappingURL=auth.css.map */
