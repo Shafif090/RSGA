@@ -39,12 +39,13 @@ nav {
 
 .rect {
   position: absolute;
-  width: 120px;
-  height: 120px;
+  width: 220px;
+  height: 220px;
   background-color: #29313f;
   border-radius: 20px;
   bottom: 30px;
-  left: calc(50% + 10px);
+  left: calc(48% + 10px);
+  top: calc(60% + 10px);
   animation: rectAnim 20s infinite;
 }
 
@@ -55,15 +56,20 @@ nav {
   }
   25% {
     transform: rotate(140deg);
-    border-radius: 0px;
+    border-radius: 5px;
+    background-color: #809bc8;
   }
   50% {
     transform: rotate(-15deg);
     border-radius: 10px;
+    background-color: #a76fb8;
   }
   75% {
-    transform: rotate(15deg);
-    border-radius: 100px;
+    transform: rotate(35deg);
+    width: 260px;
+    height: 260px;
+    border-radius: 70px;
+    background-color: #809bc8;
   }
   100% {
     transform: rotate(70deg);
@@ -71,49 +77,93 @@ nav {
   }
 }
 form {
-  position: absolute;
+  position: relative;
   top: 40px;
   left: 70px;
   height: calc(100vh - 120px);
-  width: calc(50% - 80px);
-  padding: 20px;
+  width: calc(48% - 80px);
+  padding: 20px 60px;
   background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(6.5px);
   -webkit-backdrop-filter: blur(6.5px);
+          backdrop-filter: blur(6.5px);
   border-radius: 10px;
   border: 2px solid #303030;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
 }
 form h1 {
-  padding-top: 30px;
-  font-size: 40px;
-  background: linear-gradient(to right, #809BC8 0%, #A76FB8 100%);
+  font-size: 85px;
+  padding-top: 40px;
+  background: linear-gradient(to right, #809bc8 0%, #a76fb8 100%);
   -webkit-background-clip: text;
           background-clip: text;
   text-transform: uppercase;
   -webkit-text-fill-color: transparent;
 }
+form h2 {
+  font-size: 35px;
+  padding-bottom: 8px;
+}
 form label {
   transition: background-color 0.3s ease-in-out;
   opacity: 0.85;
-  font-size: 15px;
+  font-size: 22px;
 }
 form input {
-  width: 100%;
+  width: 95%;
+  margin: 4px;
+  padding: 0 4px;
+  margin-bottom: 20px;
+  font-size: 28px;
   background-color: transparent;
-  border: 2px solid rgba(255, 255, 255, 0.842);
-  border-radius: 5px;
+  border: 3px solid rgba(255, 255, 255, 0.842);
+  border-radius: 14px;
   color: white;
   font-family: "poppins";
 }
-form .institution select.grade, form .institution select.shift {
+form .institution select {
   background-color: transparent;
-  border: 2px solid white;
+  width: 95%;
+  font-size: 24px;
+  margin: 4px;
+  padding: 4px 4px;
+  margin-bottom: 20px;
+  border: 3px solid white;
   border-radius: 10px;
   font-family: "poppins";
-  font-size: 16px;
   color: rgb(192, 192, 192);
+}
+form .personal-info,
+form .institution,
+form .finalizing {
+  padding: 164px 120px;
+  position: absolute;
+}
+form .personal-info .btnContainer,
+form .institution .btnContainer,
+form .finalizing .btnContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+form .personal-info .btnContainer button,
+form .institution .btnContainer button,
+form .finalizing .btnContainer button {
+  background-color: #303030;
+  color: white;
+  padding: 10px 20px;
+  font-size: 20px;
+  margin-top: 18px;
+  margin-right: 20px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 0px 7px #809bc8;
+}
+form .personal-info {
+  padding: 200px 120px;
+}
+form .personal-info .btnContainer button {
+  margin-top: 34px;
 }/*# sourceMappingURL=auth.css.map */

@@ -5,6 +5,9 @@
 {% endblock %}
 
 {% block main %}
+    <link rel="stylesheet" href="static/authpage/auth.css">
+
+    
     <div class="RSGAtext">
         <h1>RSGA</h1>
     </div>
@@ -16,7 +19,7 @@
         <h1>Time to begin!</h1>
         
         <div class="personal-info step" data-step="1">
-            <h2>Personal Information</h2>
+            <h2>Personal Informations</h2>
             
             <!-- Full Name -->
             <label for="full-name">Full Name</label>
@@ -31,7 +34,9 @@
             <input autocomplete="off" class="phone-number" name="phone-number" type="tel" id="phone-number">
 
             <!-- Buttons -->
-            <button type="button" data-action="next">Next</button>
+            <div class="btnContainer">
+                <button type="button" data-action="next">Next</button>
+            </div>
 
         </div>
         
@@ -71,8 +76,10 @@
             </select>
             
             <!-- Buttons -->
-            <button type="button" data-action="prev">Previous</button>
-            <button type="button" data-action="next">Next</button>
+            <div class="btnContainer">
+                <button type="button" data-action="prev">Previous</button>
+                <button type="button" data-action="next">Next</button>
+            </div>
         </div>
         
 
@@ -100,8 +107,10 @@
             <input autocomplete="off" class="confirm-password" name="confirm-password" type="password" id="confirm-password">
 
             <!-- Buttons -->
-            <button type="button" data-action="prev">Previous</button>
-            <button type="submit">Submit</button>
+            <div class="btnContainer">
+                <button type="button" data-action="prev">Previous</button>
+                <button type="submit">Submit</button>
+            </div>
         </div>
     </form>
 
