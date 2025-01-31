@@ -1,18 +1,24 @@
 @import url('https://fonts.cdnfonts.com/css/blanka');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-$background-color: #131314;
-$color-1: #0F1016;
-$color-2: #303030;
-$text-color: #F0F0F0;
-$accent-color: #006AFF;
+//variables for colors
+$darkGrey: #303030;
+$darkBlue: #29313f;
+$greyBlack: #131314;
+$lightBlue: #809BC8;
+$white: #FFFFFF;
+$purple: #A76FB8;
+//variables for screen break points
+$mobile: 480px;
+$tablet: 768px;
+$laptop: 1024px;
 
 * {
     margin: 0;
     padding: 0;
 }
 body {
-    background-color: $background-color;
+    background-color: $greyBlack;
     font-size: 18px;
     font-family: "Poppins", serif;
 }
@@ -44,7 +50,7 @@ nav {
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: $color-2;
+        background-color: $darkGrey;
         padding: 14px 16px;
         margin-right: 125px;
         border-radius: 22px;
@@ -52,11 +58,11 @@ nav {
     
     .nav-link {
         margin: 0 10px;
-        color: $text-color;
+        color: white;
         text-decoration: none;
     
         &:hover {
-            color: $accent-color;
+            color: $lightBlue;
             transition: 0.3s;
         }
     }
@@ -76,31 +82,29 @@ nav {
         display: flex;
         align-items: center;
         text-decoration: none;
-        color: $text-color;
+        color: $white;
         
     }
     a:hover {
-        color: $accent-color;
+        color: $lightBlue;
         transition: .3s;
     }
 
-    .login, .register, .logout  {
-        font-size: 18px;
-        padding: 7px 15px;
-        margin-right: 15px;
-        border: solid 1px $accent-color;
-        border-radius: 12px;
-        text-decoration: none;
-        background-color: $color-1;
-    }
-    .login:hover, .register:hover, .logout:hover {
-        color: $text-color;
-        background-color: $accent-color;
-        transition: .3s;
+    .register{
+        margin: 10px 30px;
+        svg{
+            margin-right: 5px;
+        }
+        &:hover{
+            color: $lightBlue;
+            fill: $lightBlue;
+            transition: .3s;
+
+        }
     }
     
     svg {
-        fill: $text-color;
+        fill: $white;
     }
     #sidebar-active {
         display: none;
@@ -110,7 +114,7 @@ nav {
     }
 }
 
-@media(max-width: 955px) {
+@media(max-width: 1046px) {
     nav {
         .links-container {
             padding: 20px 0;
@@ -125,7 +129,7 @@ nav {
             z-index: 10;
             width: 300px;
             height: 100%;
-            background-color: $color-1;
+            background-color: transparent;
             transition: 0.5s ease-out;
         }
         .nav-links {
@@ -143,12 +147,7 @@ nav {
         .auth {
             all: unset;
         }
-        
-        .login, .register, .logout  {
-            padding: 10px 18px;
-            width: auto;
-            margin: 15px 40px;
-        }
+    
         .open-sidebar, .close-sidebar {
             padding: 0 35px;
             display: block;
@@ -165,4 +164,50 @@ nav {
             z-index: 5;
         }
     }
+}
+
+
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    ::-webkit-scrollbar {
+      height:10px; 
+      width: 5px;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #585858;
+      height: 5px; 
+      width: 5px; 
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ffffff; 
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent; 
+    }
+    
+    ::-webkit-scrollbar-thumb:active {
+      background: #ffffff; 
+    }
+  }
+::-webkit-scrollbar {
+    height:10px; 
+    width: 5px;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: #585858;
+    height: 5px; 
+    width: 5px; 
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #ffffff; 
+}
+::-webkit-scrollbar-track {
+    background: transparent; 
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: #ffffff; 
 }
