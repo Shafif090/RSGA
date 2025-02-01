@@ -1,13 +1,15 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}
-    Register
-{% endblock %}
-
-{% block main %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
     <link rel="stylesheet" href="static/authpage/auth.css">
+</head>
 
-    
+<body>
+
     <div class="RSGAtext">
         <h1>RSGA</h1>
     </div>
@@ -17,21 +19,22 @@
 
     <form action="/register" method="post" id="multi-step-form">
         <h1>Time to begin!</h1>
-        
+
         <div class="personal-info step" data-step="1">
-            <h2>Personal Informations</h2>
-            
+            <h2>Personal Information</h2>
+
             <!-- Full Name -->
-            <label for="full-name">Full Name</label>
-            <input autocomplete="off" autofocus class="full-name" name="full-name" type="text" id="full-name">
-            
+            <label for="full_name">Full Name</label>
+            <input autocomplete="off" autofocus class="full_name" name="full_name" type="text" id="full_name" required>
+
             <!-- Email -->
             <label for="email">Email</label>
-            <input autocomplete="off" class="email" name="email" type="email" id="email">
-            
+            <input autocomplete="off" class="email" name="email" type="email" id="email" required>
+
             <!-- Phone Number -->
-            <label for="phone-number">Phone Number</label>
-            <input autocomplete="off" class="phone-number" name="phone-number" type="tel" id="phone-number">
+            <label for="phone_number">Phone Number</label>
+            <input autocomplete="off" class="phone_number" name="phone_number" type="tel" id="phone_number"
+                placeholder="01XXXXXXXXX" pattern="01[3-9][0-9]{8}" required>
 
             <!-- Buttons -->
             <div class="btnContainer">
@@ -39,72 +42,67 @@
             </div>
 
         </div>
-        
+
         <div class="institution step" data-step="2" style="display: none;">
             <h2>Institution Details</h2>
-            
+
             <!-- School -->
             <label for="school">School</label>
-            <input autocomplete="off" class="school" name="school" type="text" id="school">
-            
+            <input autocomplete="off" class="school" name="school" type="text" id="school" required>
+
             <!-- Grade -->
             <label for="grade">Grade</label>
-            <select class="grade" name="grade" id="grade">
+            <select class="grade" name="grade" id="grade" required>
                 <option disabled selected value="">Select Grade</option>
-                <option value="3">Grade 3</option>
-                <option value="4">Grade 4</option>
-                <option value="5">Grade 5</option>
-                <option value="6">Grade 6</option>
-                <option value="7">Grade 7</option>
-                <option value="8">Grade 8</option>
-                <option value="9">Grade 9</option>
-                <option value="10">Grade 10</option>
-                <option value="11">Grade 11</option>
-                <option value="12">Grade 12</option>    
+                {% for grade in grades %}
+                <option value="{{ grade }}">Grade {{ grade }}</option>
+                {% endfor %}
             </select>
 
             <!-- Section -->
             <label for="section">Section</label>
-            <input autocomplete="off" class="section" name="section" type="text" id="section">
-            
+            <input autocomplete="off" class="section" name="section" type="text" id="section" required>
+
             <!-- Shift -->
             <label for="shift">Shift</label>
-            <select class="shift" name="shift" id="shift">
-                <option disabled selected value="">Select Shift</option>  
-                <option value="morning">Morning</option>  
-                <option value="day">Day</option>
+            <select class="shift" name="shift" id="shift" required>
+                <option disabled selected value="">Select Shift</option>
+                {% for shift in shifts %}
+                <option value="{{ shift }}">{{ shift }}</option>
+                {% endfor %}
             </select>
-            
+
             <!-- Buttons -->
             <div class="btnContainer">
                 <button type="button" data-action="prev">Previous</button>
                 <button type="button" data-action="next">Next</button>
             </div>
         </div>
-        
+
 
         <div class="finalizing step" data-step="3" style="display: none;">
             <h2>Almost done!</h2>
-            
+
             <!-- Facebook -->
             <label for="facebook">Facebook URL</label>
             <input autocomplete="off" class="facebook" name="facebook" type="url" id="facebook">
-            
+
             <!-- Instagram -->
             <label for="instagram">Instagram URL</label>
             <input autocomplete="off" class="instagram" name="instagram" type="url" id="instagram">
-            
+
             <!-- Discord -->
             <label for="discord">Discord Username</label>
             <input autocomplete="off" class="discord" name="discord" type="text" id="discord">
-            
+
             <!-- Password -->
             <label for="password">Password</label>
-            <input autocomplete="off" class="password" name="password" type="password" id="password">
-            
+            <input autocomplete="off" class="password" name="password" type="password" id="password" required>
+
             <!-- Confirm Password -->
-            <label for="confirm-password">Confirm Password</label>
-            <input autocomplete="off" class="confirm-password" name="confirm-password" type="password" id="confirm-password">
+            <label for="confirm_password">Confirm Password</label>
+            <input autocomplete="off" class="confirm_password" name="confirm_password" type="password"
+                id="confirm_password" required>
 
             <!-- Buttons -->
             <div class="btnContainer">
@@ -114,6 +112,7 @@
         </div>
     </form>
 
-    <link rel="stylesheet" href="static/authpage/auth.css">
     <script src="static/authpage/script.js"></script>
-{% endblock %}
+</body>
+
+</html>

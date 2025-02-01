@@ -20,10 +20,6 @@ body {
   overflow: hidden;
 }
 
-nav {
-  display: none;
-}
-
 .RSGAtext {
   position: absolute;
   left: calc(100vw - 130px);
@@ -68,16 +64,19 @@ nav {
     transform: rotate(70deg);
     border-radius: 20px;
   }
+
   25% {
     transform: rotate(140deg);
     border-radius: 5px;
     background-color: $lightBlue;
   }
+
   50% {
     transform: rotate(-15deg);
     border-radius: 10px;
     background-color: $purple;
   }
+
   75% {
     transform: rotate(35deg);
     width: 260px;
@@ -85,6 +84,7 @@ nav {
     border-radius: 70px;
     background-color: $lightBlue;
   }
+
   100% {
     transform: rotate(70deg);
     border-radius: 20px;
@@ -153,6 +153,7 @@ form {
       color: rgb(192, 192, 192);
     }
   }
+
   .personal-info,
   .institution,
   .finalizing {
@@ -178,8 +179,10 @@ form {
       }
     }
   }
+
   .personal-info {
     padding: 200px 120px;
+
     .btnContainer button {
       margin-top: 34px;
     }
