@@ -1,9 +1,105 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    RSGA
+RSGA
 {% endblock %}
 
 {% block main %}
-    
+
+<div class="topShadow"></div>
+
+<div class="mainContent">
+    <div class="center_main">
+
+        <h1>❝ Lorem ipsum dolor sit amet consectetur.</h1>
+        <a href="/login">
+            <button class="signInNormalBtn">
+                <p>Sign In</p>
+                <svg xmlns="http://www.w3.org/2000/svg" height="26px" viewBox="0 -960 960 960" width="26px"
+                    fill="undefined">
+                    <path
+                        d="M480-120v-80h280v-560H480v-80h280q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H480Zm-80-160-55-58 102-102H120v-80h327L345-622l55-58 200 200-200 200Z" />
+                </svg>
+            </button>
+        </a>
+    </div>
+    <div class="leaderBoard">
+        <h1 class="leaderBoardHeading">leaderBoard - TOP 3</h1>
+        <div class="leaderCell">
+            <img class="leaderProfileImg" src="/static/media/profile.png" width="90px" height="90px">
+            <div class="leaderDetails">
+                <h2>Ching chong bhai</h2>
+                <p>ching low school</p>
+            </div>
+            <h1 class="points">10pt</h1>
+        </div>
+        <div class="leaderCell">
+            <img class="leaderProfileImg" src="/static/media/profile.png" width="90px" height="90px">
+            <div class="leaderDetails">
+                <h2>pong bhai</h2>
+                <p>pong ultra high school</p>
+            </div>
+            <h1 class="points">7pt</h1>
+        </div>
+        <div class="leaderCell">
+            <img class="leaderProfileImg" src="/static/media/profile.png" width="90px" height="90px">
+            <div class="leaderDetails">
+                <h2>ping bhai</h2>
+                <p>channghua high school</p>
+            </div>
+            <h1 class="points">6pt</h1>
+        </div>
+    </div>
+
+    <div class="wordsFromPeople">
+        <div class="mainPart">
+            <div class="verticalAlign">
+                <img src="/static/media/moderator.jpg" class="moderatorImg">
+                <h2 class="moderatorName">Dracula bhai <br> Moderator, RSGA</h2>
+            </div>
+            <div class="verticalAlign">
+                <h1>Words from our moderator</h1>
+                <h3>Zorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae autem dignissimos excepturi sunt
+                    eaque, aperiam ducimus nobis consectetur numquam dolorem iste aut, necessitatibus repellat sapiente
+                    velit distinctio! Quis excepturi fuga facere, accusamus veritatis voluptatum recusandae adipisci,
+                    ipsa, laborum dignissimos eveniet ad obcaecati illo atque. Eligendi alias animi reprehenderit
+                    accusamus possimus.</h3>
+            </div>
+        </div>
+    </div>
+    <div class="wordsFromPeople">
+        <div class="mainPart">
+            <div class="verticalAlign">
+                <h1>Words from our president</h1>
+                <h3>Sorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae autem dignissimos excepturi sunt
+                    eaque, aperiam ducimus nobis consectetur numquam dolorem iste aut, necessitatibus repellat sapiente
+                    velit distinctio! Quis excepturi fuga facere, accusamus veritatis voluptatum recusandae adipisci,
+                    ipsa, laborum dignissimos eveniet ad obcaecati illo atque. Eligendi alias animi reprehenderit
+                    accusamus possimus.</h3>
+            </div>
+            <div class="verticalAlign">
+                <img src="/static/media/president.jpg" class="presidentImg">
+                <h2 class="moderatorName">Mona Lisa bhai <br> President, RSGA</h2>
+            </div>
+        </div>
+    </div>
+    <div class="analysis">
+        <h1>Analysis Football</h1>
+        <div class="horizontalAlign">
+            <div class="chart" id="goalChart"></div>
+            <div class="chart" id="assistChart"></div>
+        </div>
+        <button class="checkDashboardBtn">
+            <p>CHECK DASHBOARD</p>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                fill="undefined">
+                <path
+                    d="M520-600v-240h320v240H520ZM120-440v-400h320v400H120Zm400 320v-400h320v400H520Zm-400 0v-240h320v240H120Zm80-400h160v-240H200v240Zm400 320h160v-240H600v240Zm0-480h160v-80H600v80ZM200-200h160v-80H200v80Zm160-320Zm240-160Zm0 240ZM360-280Z" />
+            </svg>
+        </button>
+    </div>
+</div>
+<link rel="stylesheet" href="static/landing/style.css">
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="static/landing/landing.js"></script>
 {% endblock %}

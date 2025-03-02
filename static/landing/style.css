@@ -1,0 +1,313 @@
+@import url("https://fonts.cdnfonts.com/css/blanka");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+@font-face {
+  font-family: "garnet";
+  src: url("../fonts/GarnetCapitals-Regular.ttf");
+}
+body {
+  font-family: "Poppins";
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+.topShadow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(100vw 70vh at 50% -100px, rgba(128, 154, 200, 0.3960784314) 20%, rgba(19, 31, 51, 0) 100%);
+  pointer-events: none;
+  top: 0;
+}
+
+.mainContent {
+  width: 100vw;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.mainContent .center_main {
+  margin-top: 18vh;
+  font-size: 30px;
+  font-family: "garnet";
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 95vw;
+  height: auto;
+  text-align: center;
+  color: white;
+}
+.mainContent .center_main h1 {
+  font-size: 80px;
+}
+.mainContent .center_main h1::first-letter {
+  color: #A76FB8;
+  font-size: 140px;
+}
+.mainContent .center_main a {
+  text-decoration: none;
+}
+.mainContent .center_main .signInNormalBtn {
+  background-color: #303030;
+  color: white;
+  fill: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  font-family: "Poppins";
+  font-size: 30px;
+  height: 50px;
+  border: none;
+  box-shadow: 0px 0px 7px #809BC8;
+  border-radius: 10px;
+  width: 155px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.mainContent .center_main .signInNormalBtn svg {
+  width: 30px;
+  height: 30px;
+}
+.mainContent .center_main .signInNormalBtn:hover {
+  width: 200px;
+  border-radius: 40px;
+  gap: 50px;
+}
+.mainContent .leaderBoard {
+  margin-top: 50vh;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 9px 3px rgba(255, 255, 255, 0.63);
+}
+.mainContent .leaderBoard .leaderBoardHeading {
+  font-family: "garnet";
+  text-align: center;
+  color: #809BC8;
+}
+.mainContent .leaderBoard .leaderCell {
+  display: grid;
+  grid-template-columns: 100px auto 80px;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: #303030;
+  max-width: 100%;
+}
+.mainContent .leaderBoard .leaderCell .leaderProfileImg {
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+}
+.mainContent .leaderBoard .leaderCell .leaderDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.mainContent .leaderBoard .leaderCell .leaderDetails h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: white;
+}
+.mainContent .leaderBoard .leaderCell .leaderDetails p {
+  font-family: "Poppins";
+  margin: 0;
+  font-size: 1rem;
+  color: #777;
+}
+.mainContent .leaderBoard .leaderCell .points {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #A76FB8;
+  text-align: right;
+}
+.mainContent .wordsFromPeople {
+  margin-top: 150px;
+  width: 90vw;
+}
+.mainContent .wordsFromPeople .topLine {
+  width: 300px;
+  height: 5px;
+  background-color: #809BC8;
+  border-radius: 5px;
+}
+.mainContent .wordsFromPeople .mainPart {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  color: white;
+}
+.mainContent .wordsFromPeople .mainPart .verticalAlign {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.mainContent .wordsFromPeople .mainPart .moderatorName {
+  text-align: center;
+  opacity: 0.9;
+}
+.mainContent .wordsFromPeople .mainPart h1 {
+  font-family: "garnet";
+  align-self: flex-start;
+}
+.mainContent .wordsFromPeople .mainPart h3 {
+  font-weight: 300;
+  opacity: 0.95;
+  background-color: #303030;
+  padding: 10px;
+  border-radius: 10px;
+}
+.mainContent .wordsFromPeople .mainPart h3::first-letter {
+  color: #809BC8;
+  font-size: 50px;
+}
+.mainContent .wordsFromPeople .mainPart h2 {
+  font-weight: 300;
+  font-size: 20px;
+}
+.mainContent .wordsFromPeople .mainPart img {
+  border-radius: 10px;
+  box-shadow: 0px 0px 9px 3px rgba(255, 255, 255, 0.63);
+  max-width: 45vw;
+  max-height: 50vh;
+}
+.mainContent .analysis {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100vw;
+}
+.mainContent .analysis h1 {
+  font-family: "garnet";
+  text-align: center;
+  color: white;
+  font-size: 50px;
+  justify-self: flex-start;
+}
+.mainContent .analysis .horizontalAlign {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.mainContent .analysis .checkDashboardBtn {
+  background-color: #303030;
+  color: white;
+  fill: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  font-family: "Poppins";
+  font-size: 30px;
+  height: 50px;
+  border: none;
+  box-shadow: 0px 0px 7px #809BC8;
+  border-radius: 10px;
+  width: auto;
+  transition: 0.3s;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-bottom: 30px;
+}
+.mainContent .analysis .checkDashboardBtn svg {
+  fill: white;
+  width: 30px;
+  height: 30px;
+}
+.mainContent .analysis .checkDashboardBtn:hover {
+  border-radius: 100px;
+}
+
+@media (max-width: 480px) {
+  .mainContent .center_main h1 {
+    font-size: 50px;
+  }
+  .mainContent .center_main h1::first-letter {
+    font-size: 60px;
+  }
+  .mainContent .leaderBoard {
+    max-width: 90vw;
+  }
+  .mainContent .leaderBoard .leaderBoardHeading {
+    font-size: 26px;
+  }
+  .mainContent .leaderBoard .leaderCell .leaderProfileImg {
+    width: 70px;
+    height: 70px;
+  }
+  .mainContent .leaderBoard .leaderCell .leaderDetails h2 {
+    font-size: 1.1rem;
+  }
+  .mainContent .leaderBoard .leaderCell .leaderDetails p {
+    font-size: 1rem;
+  }
+  .mainContent .wordsFromPeople {
+    margin-top: 150px;
+    width: 90vw;
+  }
+  .mainContent .wordsFromPeople .mainPart {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    color: white;
+  }
+  .mainContent .wordsFromPeople .mainPart .verticalAlign {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  .mainContent .wordsFromPeople .mainPart .moderatorName {
+    text-align: center;
+    opacity: 0.9;
+  }
+  .mainContent .wordsFromPeople .mainPart h1 {
+    font-family: "garnet";
+    align-self: flex-start;
+  }
+  .mainContent .wordsFromPeople .mainPart h3 {
+    font-weight: 300;
+    opacity: 0.95;
+    background-color: #303030;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  .mainContent .wordsFromPeople .mainPart h3::first-letter {
+    color: #809BC8;
+    font-size: 50px;
+  }
+  .mainContent .wordsFromPeople .mainPart img {
+    border-radius: 10px;
+    box-shadow: 0px 0px 9px 3px rgba(255, 255, 255, 0.63);
+    max-width: 45vw;
+  }
+  .mainContent .analysis h1 {
+    font-size: 30px;
+  }
+}/*# sourceMappingURL=style.css.map */

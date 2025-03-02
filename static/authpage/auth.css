@@ -1,3 +1,5 @@
+@import url("https://fonts.cdnfonts.com/css/blanka");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 body {
   background-color: #131314;
   color: white;
@@ -76,9 +78,9 @@ form {
   position: relative;
   top: 40px;
   left: 70px;
-  height: calc(100vh - 120px);
+  height: 86vh;
   width: calc(48% - 80px);
-  padding: 20px 60px;
+  padding: 1.5vh 60px;
   background: rgba(255, 255, 255, 0.05);
   -webkit-backdrop-filter: blur(6.5px);
           backdrop-filter: blur(6.5px);
@@ -89,8 +91,8 @@ form {
   align-items: center;
 }
 form h1 {
-  font-size: 85px;
-  padding-top: 40px;
+  font-size: 6vh;
+  padding-top: 2vh;
   background: linear-gradient(to right, #809bc8 0%, #a76fb8 100%);
   -webkit-background-clip: text;
           background-clip: text;
@@ -98,46 +100,36 @@ form h1 {
   -webkit-text-fill-color: transparent;
 }
 form h2 {
-  font-size: 35px;
-  padding-bottom: 8px;
+  font-size: 4vh;
 }
 form label {
   transition: background-color 0.3s ease-in-out;
   opacity: 0.85;
-  font-size: 22px;
+  margin-left: 1vh;
+  font-size: 2.5vh;
 }
 form input {
   width: 95%;
-  margin: 4px;
   padding: 0 4px;
+  margin: 4px;
   margin-bottom: 20px;
-  font-size: 28px;
+  font-size: 3.2vh;
+  font-family: "poppins";
   background-color: transparent;
   border: 3px solid rgba(255, 255, 255, 0.842);
-  border-radius: 14px;
+  border-radius: 12px;
   color: white;
-  font-family: "poppins";
-}
-form .institution select {
-  background-color: transparent;
-  width: 95%;
-  font-size: 24px;
-  margin: 4px;
-  padding: 4px 4px;
-  margin-bottom: 20px;
-  border: 3px solid white;
-  border-radius: 10px;
-  font-family: "poppins";
-  color: rgb(192, 192, 192);
 }
 form .personal-info,
 form .institution,
+form .social,
 form .finalizing {
-  padding: 164px 120px;
+  padding: 16vh 12vh;
   position: absolute;
 }
 form .personal-info .btnContainer,
 form .institution .btnContainer,
+form .social .btnContainer,
 form .finalizing .btnContainer {
   width: 100%;
   display: flex;
@@ -146,20 +138,37 @@ form .finalizing .btnContainer {
 }
 form .personal-info .btnContainer button,
 form .institution .btnContainer button,
+form .social .btnContainer button,
 form .finalizing .btnContainer button {
   background-color: #303030;
   color: white;
   padding: 10px 20px;
   font-size: 20px;
-  margin-top: 18px;
+  margin-top: 34px;
   margin-right: 20px;
   border: none;
   border-radius: 10px;
   box-shadow: 0px 0px 7px #809bc8;
 }
-form .personal-info {
-  padding: 200px 120px;
+form .institution select {
+  background-color: transparent;
+  width: 100%;
+  font-size: 2.8vh;
+  margin: 4px;
+  padding: 3px 4px;
+  margin-bottom: 20px;
+  border: 3px solid white;
+  border-radius: 12px;
+  font-family: "poppins";
+  color: rgb(192, 192, 192);
 }
-form .personal-info .btnContainer button {
-  margin-top: 34px;
+form .institution .field-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+form .institution .field-container .field {
+  width: 48%;
+  display: flex;
+  flex-direction: column;
 }/*# sourceMappingURL=auth.css.map */

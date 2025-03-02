@@ -1,0 +1,396 @@
+@import url('https://fonts.cdnfonts.com/css/blanka');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+//variables for colors
+$darkGrey: #303030;
+$darkBlue: #29313f;
+$greyBlack: #131314;
+$lightBlue: #809BC8;
+$white: #FFFFFF;
+$purple: #A76FB8;
+//variables for screen break points
+$mobile: 480px;
+$tablet: 768px;
+$laptop: 1024px;
+
+@font-face {
+    font-family: 'garnet';
+    src: url('../fonts/GarnetCapitals-Regular.ttf');
+}
+
+body {
+    font-family: 'Poppins';
+    width: 100vw;
+    overflow-x: hidden;
+}
+
+.topShadow {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(100vw 70vh at 50% -100px, #809ac865 20%, rgba(19, 31, 51, 0) 100%);
+    pointer-events: none;
+    top: 0;
+}
+
+.mainContent {
+    width: 100vw;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .center_main {
+        margin-top: 18vh;
+        font-size: 30px;
+        font-family: 'garnet';
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        width: 95vw;
+        height: auto;
+        text-align: center;
+        color: white;
+
+        h1 {
+            font-size: 80px;
+        }
+
+        h1::first-letter {
+            color: $purple;
+            font-size: 140px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .signInNormalBtn {
+            background-color: $darkGrey;
+            color: white;
+            fill: white;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            font-family: 'Poppins';
+            font-size: 30px;
+            height: 50px;
+            border: none;
+            box-shadow: 0px 0px 7px $lightBlue;
+            border-radius: 10px;
+            width: 155px;
+            transition: .3s;
+            cursor: pointer;
+
+            svg {
+                width: 30px;
+                height: 30px;
+            }
+
+            &:hover {
+                width: 200px;
+                border-radius: 40px;
+                gap: 50px;
+            }
+        }
+    }
+
+    .leaderBoard {
+        margin-top: 50vh;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px;
+        border-radius: 10px;
+        -webkit-box-shadow: 0px 0px 9px 3px rgba(255, 255, 255, 0.63);
+        -moz-box-shadow: 0px 0px 9px 3px rgba(255, 255, 255, 0.63);
+        box-shadow: 0px 0px 9px 3px rgba(255, 255, 255, 0.63);
+
+        .leaderBoardHeading {
+            font-family: 'garnet';
+            text-align: center;
+            color: $lightBlue;
+        }
+
+        .leaderCell {
+            display: grid;
+            grid-template-columns: 100px auto 80px;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            background-color: $darkGrey;
+            max-width: 100%;
+
+            .leaderProfileImg {
+                border-radius: 50%;
+                width: 90px;
+                height: 90px;
+            }
+
+            .leaderDetails {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+
+                h2 {
+                    margin: 0;
+                    font-size: 1.4rem;
+                    color: white;
+                }
+
+                p {
+                    font-family: 'Poppins';
+                    margin: 0;
+                    font-size: 1rem;
+                    color: #777;
+                }
+            }
+
+            .points {
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: $purple;
+                text-align: right;
+            }
+        }
+    }
+
+    .wordsFromPeople {
+        margin-top: 150px;
+        width: 90vw;
+
+        .topLine {
+            width: 300px;
+            height: 5px;
+            background-color: $lightBlue;
+            border-radius: 5px;
+        }
+
+        .mainPart {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            color: white;
+
+            .verticalAlign {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .moderatorName {
+                text-align: center;
+                opacity: 0.9;
+            }
+
+            h1 {
+                font-family: 'garnet';
+                align-self: flex-start;
+            }
+
+            h3 {
+                font-weight: 300;
+
+                &::first-letter {
+                    color: $lightBlue;
+                    font-size: 50px;
+                }
+
+                opacity: 0.95;
+                background-color: $darkGrey;
+                padding: 10px;
+                border-radius: 10px;
+            }
+
+            h2 {
+                font-weight: 300;
+                font-size: 20px;
+            }
+
+            img {
+                border-radius: 10px;
+                -webkit-box-shadow: 0px 0px 9px 3px rgba(255, 255, 255, 0.63);
+                -moz-box-shadow: 0px 0px 9px 3px rgba(255, 255, 255, 0.63);
+                box-shadow: 0px 0px 9px 3px rgba(255, 255, 255, 0.63);
+                max-width: 45vw;
+                max-height: 50vh;
+            }
+        }
+    }
+
+    .analysis {
+        margin-top: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        width: 100vw;
+
+        h1 {
+            font-family: 'garnet';
+            text-align: center;
+            color: white;
+            font-size: 50px;
+            justify-self: flex-start;
+        }
+
+        .horizontalAlign {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .checkDashboardBtn {
+            background-color: $darkGrey;
+            color: white;
+            fill: white;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            font-family: 'Poppins';
+            font-size: 30px;
+            height: 50px;
+            border: none;
+            box-shadow: 0px 0px 7px $lightBlue;
+            border-radius: 10px;
+            width: auto;
+            transition: .3s;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-bottom: 30px;
+
+            svg {
+                fill: white;
+                width: 30px;
+                height: 30px;
+            }
+
+            &:hover {
+                border-radius: 100px;
+            }
+        }
+    }
+}
+
+// Styles for mobile screens
+@media (max-width: $mobile) {
+    .mainContent {
+        .center_main {
+            h1 {
+                font-size: 50px;
+
+                &::first-letter {
+                    font-size: 60px;
+                }
+            }
+        }
+
+        .leaderBoard {
+            max-width: 90vw;
+
+            .leaderBoardHeading {
+                font-size: 26px;
+            }
+
+            .leaderCell {
+                .leaderProfileImg {
+                    width: 70px;
+                    height: 70px;
+                }
+
+                .leaderDetails {
+                    h2 {
+                        font-size: 1.1rem;
+                    }
+
+                    p {
+                        font-size: 1rem;
+                    }
+                }
+            }
+        }
+
+        .wordsFromPeople {
+            margin-top: 150px;
+            width: 90vw;
+
+            .mainPart {
+                margin-top: 20px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 20px;
+                color: white;
+
+                .verticalAlign {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 10px;
+                }
+
+                .moderatorName {
+                    text-align: center;
+                    opacity: 0.9;
+                }
+
+                h1 {
+                    font-family: 'garnet';
+                    align-self: flex-start;
+                }
+
+                h3 {
+                    font-weight: 300;
+
+                    &::first-letter {
+                        color: $lightBlue;
+                        font-size: 50px;
+                    }
+
+                    opacity: 0.95;
+                    background-color: $darkGrey;
+                    padding: 10px;
+                    border-radius: 10px;
+                }
+
+                img {
+                    border-radius: 10px;
+                    -webkit-box-shadow: 0px 0px 9px 3px rgba(255, 255, 255, 0.63);
+                    -moz-box-shadow: 0px 0px 9px 3px rgba(255, 255, 255, 0.63);
+                    box-shadow: 0px 0px 9px 3px rgba(255, 255, 255, 0.63);
+                    max-width: 45vw;
+                }
+            }
+        }
+
+        .analysis {
+            h1 {
+                font-size: 30px;
+            }
+        }
+    }
+
+}
+
+// Styles for tablet screens
+@media (min-width: $mobile) and (max-width: $tablet) {}
