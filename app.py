@@ -61,7 +61,7 @@ def login():
         # Basic validation
         if not email:
             return apology("Must provide email", 403)
-        if not password:
+        elif not password:
             return apology("Must provide password", 403)
 
         user = Users.query.filter_by(email=email).first()
@@ -161,6 +161,18 @@ def dashboard():
     user_id = session["user_id"]
     user = Users.query.get(user_id)
     return render_template("dashboard.html", user=user)
+
+@app.route("/leaderboard")
+def leaderboard():
+    return render_template("leaderboard.html")
+
+@app.route("/events")
+def events():
+    return render_template("events.html")
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
 @app.route("/logout")
 def logout():

@@ -91,7 +91,7 @@ form {
   align-items: center;
 }
 form h1 {
-  font-size: 6vh;
+  font-size: 6.5vh;
   padding-top: 2vh;
   background: linear-gradient(to right, #809bc8 0%, #a76fb8 100%);
   -webkit-background-clip: text;
@@ -123,14 +123,16 @@ form input {
 form .personal-info,
 form .institution,
 form .social,
-form .finalizing {
+form .finalizing,
+form .login-form {
   padding: 16vh 12vh;
   position: absolute;
 }
 form .personal-info .btnContainer,
 form .institution .btnContainer,
 form .social .btnContainer,
-form .finalizing .btnContainer {
+form .finalizing .btnContainer,
+form .login-form .btnContainer {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -139,11 +141,13 @@ form .finalizing .btnContainer {
 form .personal-info .btnContainer button,
 form .institution .btnContainer button,
 form .social .btnContainer button,
-form .finalizing .btnContainer button {
+form .finalizing .btnContainer button,
+form .login-form .btnContainer button {
   background-color: #303030;
   color: white;
   padding: 10px 20px;
   font-size: 20px;
+  font-family: "poppins";
   margin-top: 34px;
   margin-right: 20px;
   border: none;
@@ -171,4 +175,10 @@ form .institution .field-container .field {
   width: 48%;
   display: flex;
   flex-direction: column;
+}
+form .login-form {
+  padding-top: 12vw;
+}
+form .login-form .btnContainer {
+  padding-top: 3vw;
 }/*# sourceMappingURL=auth.css.map */

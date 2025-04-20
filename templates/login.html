@@ -17,27 +17,24 @@
     <div class="shadow"></div>
     <div class="rect"></div>
 
-    <form action="/login" method="post" id="login-form">
+    <form action="/login" method="post">
         <h1>Welcome Back!</h1>
 
-        <!-- Email -->
-        <label for="email">Email</label>
-        <input autocomplete="off" class="email" name="email" type="email" id="email" required autofocus>
+        <div class="login-form">
+            <!-- Email -->
+            <label for="email">Email</label>
+            <input autocomplete="off" class="email" name="email" type="email" id="email" required autofocus>
 
-        <!-- Password -->
-        <label for="password">Password</label>
-        <input autocomplete="off" class="password" name="password" type="password" id="password" required>
+            <!-- Password -->
+            <label for="password">Password</label>
+            <input autocomplete="off" class="password" name="password" type="password" id="password" required>
 
-        <!-- Submit Button -->
-        <div class="btnContainer">
-            <button type="submit">Login</button>
+            <!-- Submit Button -->
+            <div class="btnContainer">
+                <button type="submit">Login</button>
+            </div>
         </div>
-
-        <!-- Optional: Link to Register -->
-        <p>Don't have an account? <a href="/register">Register here</a></p>
     </form>
-
-    <script src="static/authpage/script.js"></script>
 
 </body>
 

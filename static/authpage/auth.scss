@@ -112,7 +112,7 @@ form {
   align-items: center;
 
   h1 {
-    font-size: 6vh;
+    font-size: 6.5vh;
     padding-top: 2vh;
     background: linear-gradient(to right, $lightBlue 0%, $purple 100%);
     background-clip: text;
@@ -147,7 +147,8 @@ form {
   .personal-info,
   .institution,
   .social,
-  .finalizing {
+  .finalizing,
+  .login-form {
     padding: 16vh 12vh;
     position: absolute;
 
@@ -162,6 +163,7 @@ form {
         color: white;
         padding: 10px 20px;
         font-size: 20px;
+        font-family: "poppins";
         margin-top: 34px;
         margin-right: 20px;
         border: none;
@@ -197,5 +199,11 @@ form {
       }
     }
 
+  }
+  .login-form {
+    padding-top: 12vw;
+    .btnContainer {
+      padding-top: 3vw;
+    }
   }
 }
