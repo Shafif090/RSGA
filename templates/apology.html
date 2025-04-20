@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+
+    <div style="display: flex; align-items: center; justify-content: center; padding-top: 5vw;">
+        <img alt="{{ top }}" class="##" width="300" src="https://api.memegen.link/images/custom/{{ top | urlencode }}/{{ bottom | urlencode }}.jpg?background=https://i.postimg.cc/vBJ0ZCMw/error-1.png" title="{{ top }}">
+    </div>
+
+{% endblock %}
