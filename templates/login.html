@@ -1,9 +1,44 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}
-    Login
-{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="static/authpage/auth.css">
+</head>
 
-{% block main %}
-    
-{% endblock %}
+<body>
+
+    <div class="RSGAtext">
+        <h1>RSGA</h1>
+    </div>
+
+    <div class="shadow"></div>
+    <div class="rect"></div>
+
+    <form action="/login" method="post" id="login-form">
+        <h1>Welcome Back!</h1>
+
+        <!-- Email -->
+        <label for="email">Email</label>
+        <input autocomplete="off" class="email" name="email" type="email" id="email" required autofocus>
+
+        <!-- Password -->
+        <label for="password">Password</label>
+        <input autocomplete="off" class="password" name="password" type="password" id="password" required>
+
+        <!-- Submit Button -->
+        <div class="btnContainer">
+            <button type="submit">Login</button>
+        </div>
+
+        <!-- Optional: Link to Register -->
+        <p>Don't have an account? <a href="/register">Register here</a></p>
+    </form>
+
+    <script src="static/authpage/script.js"></script>
+
+</body>
+
+</html>

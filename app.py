@@ -35,6 +35,10 @@ SHIFTS = [
 ]
 
 
+@app.context_processor
+def inject_user():
+    return dict(is_logged_in=("user_id" in session))
+
 @app.errorhandler(404)
 def page_not_found(e):
     return apology("Page not found", 404)
@@ -46,8 +50,7 @@ def page_not_found(e):
 
 @app.route("/")
 def home():
-    is_logged_in = "user_id" in session  # Check if user is logged in
-    return render_template("index.html", is_logged_in=is_logged_in)
+    return render_template("index.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -63,7 +66,7 @@ def login():
 
         user = Users.query.filter_by(email=email).first()
 
-        if user and check_password_hash(user.hash, password):
+        if user and check_password_hash(user.password_hash, password):
             session["user_id"] = user.id
             return redirect("/dashboard")
         else:
