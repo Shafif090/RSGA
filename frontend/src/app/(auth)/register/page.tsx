@@ -1,0 +1,614 @@
+"use client";
+
+import type React from "react";
+
+import { useState } from "react";
+import Link from "next/link";
+
+interface FormData {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  school: string;
+  grade: string;
+  section: string;
+  shift: string;
+  facebook: string;
+  instagram: string;
+  discord: string;
+  password: string;
+  confirmPassword: string;
+}
+
+const grades = ["6", "7", "8", "9", "10", "11", "12"];
+const shifts = ["Morning", "Day", "Evening"];
+
+export default function RegisterPage() {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState<FormData>({
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    school: "",
+    grade: "",
+    section: "",
+    shift: "",
+    facebook: "",
+    instagram: "",
+    discord: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const validateStep = (step: number) => {
+    const newErrors: Record<string, string> = {};
+
+    switch (step) {
+      case 1:
+        if (!formData.fullName.trim())
+          newErrors.fullName = "Full name is required";
+        if (!formData.email.trim()) {
+          newErrors.email = "Email is required";
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+          newErrors.email = "Email is invalid";
+        }
+        if (!formData.phoneNumber.trim()) {
+          newErrors.phoneNumber = "Phone number is required";
+        } else if (!/^01[3-9][0-9]{8}$/.test(formData.phoneNumber)) {
+          newErrors.phoneNumber = "Phone number must match format 01XXXXXXXXX";
+        }
+        break;
+      case 2:
+        if (!formData.school.trim()) newErrors.school = "School is required";
+        if (!formData.grade) newErrors.grade = "Grade is required";
+        if (!formData.section.trim()) newErrors.section = "Section is required";
+        if (!formData.shift) newErrors.shift = "Shift is required";
+        break;
+      case 3:
+        // Social media fields are optional
+        break;
+      case 4:
+        if (!formData.password.trim()) {
+          newErrors.password = "Password is required";
+        } else if (formData.password.length < 6) {
+          newErrors.password = "Password must be at least 6 characters";
+        }
+        if (!formData.confirmPassword.trim()) {
+          newErrors.confirmPassword = "Confirm password is required";
+        } else if (formData.password !== formData.confirmPassword) {
+          newErrors.confirmPassword = "Passwords do not match";
+        }
+        break;
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleNext = () => {
+    if (validateStep(currentStep)) {
+      setCurrentStep((prev) => Math.min(prev + 1, 4));
+    }
+  };
+
+  const handlePrev = () => {
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validateStep(4)) return;
+
+    setIsSubmitting(true);
+
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    console.log("Registration data:", formData);
+    setIsSubmitting(false);
+  };
+
+  const handleInputChange = (field: keyof FormData, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: "" }));
+    }
+  };
+
+  const renderStep = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <div className="space-y-5">
+            <h2 className="text-2xl font-semibold text-white mb-6">
+              Personal Information
+            </h2>
+
+            <div>
+              <label
+                htmlFor="fullName"
+                className="block text-lg opacity-85 mb-2 font-medium">
+                Full Name
+              </label>
+              <input
+                id="fullName"
+                type="text"
+                value={formData.fullName}
+                onChange={(e) => handleInputChange("fullName", e.target.value)}
+                className="w-full px-4 py-3 text-lg bg-transparent border-[3px] border-white/80 rounded-[12px] text-white focus:border-[#809bc8] transition-all duration-300 h-12 focus:outline-none"
+                autoComplete="off"
+                autoFocus
+              />
+              {errors.fullName && (
+                <div className="mt-2 border border-red-500/50 bg-red-500/10 backdrop-blur-sm rounded-md p-3">
+                  <div className="text-red-400 text-sm">{errors.fullName}</div>
+                </div>
+              )}
+            </div>
+
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-lg opacity-85 mb-2 font-medium">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={formData.email}
+                onChange={(e) => handleInputChange("email", e.target.value)}
+                className="w-full px-4 py-3 text-lg bg-transparent border-[3px] border-white/80 rounded-[12px] text-white focus:border-[#809bc8] transition-all duration-300 h-12 focus:outline-none"
+                autoComplete="off"
+              />
+              {errors.email && (
+                <div className="mt-2 border border-red-500/50 bg-red-500/10 backdrop-blur-sm rounded-md p-3">
+                  <div className="text-red-400 text-sm">{errors.email}</div>
+                </div>
+              )}
+            </div>
+
+            <div>
+              <label
+                htmlFor="phoneNumber"
+                className="block text-lg opacity-85 mb-2 font-medium">
+                Phone Number
+              </label>
+              <input
+                id="phoneNumber"
+                type="tel"
+                value={formData.phoneNumber}
+                onChange={(e) =>
+                  handleInputChange("phoneNumber", e.target.value)
+                }
+                placeholder="01XXXXXXXXX"
+                className="w-full px-4 py-3 text-lg bg-transparent border-[3px] border-white/80 rounded-[12px] text-white placeholder:text-gray-400 focus:border-[#809bc8] transition-all duration-300 h-12 focus:outline-none"
+                autoComplete="off"
+              />
+              {errors.phoneNumber && (
+                <div className="mt-2 border border-red-500/50 bg-red-500/10 backdrop-blur-sm rounded-md p-3">
+                  <div className="text-red-400 text-sm">
+                    {errors.phoneNumber}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+
+      case 2:
+        return (
+          <div className="space-y-5">
+            <h2 className="text-2xl font-semibold text-white mb-6">
+              Institution Details
+            </h2>
+
+            <div>
+              <label
+                htmlFor="school"
+                className="block text-lg opacity-85 mb-2 font-medium">
+                School
+              </label>
+              <input
+                id="school"
+                type="text"
+                value={formData.school}
+                onChange={(e) => handleInputChange("school", e.target.value)}
+                className="w-full px-4 py-3 text-lg bg-transparent border-[3px] border-white/80 rounded-[12px] text-white focus:border-[#809bc8] transition-all duration-300 h-12 focus:outline-none"
+                autoComplete="off"
+              />
+              {errors.school && (
+                <div className="mt-2 border border-red-500/50 bg-red-500/10 backdrop-blur-sm rounded-md p-3">
+                  <div className="text-red-400 text-sm">{errors.school}</div>
+                </div>
+              )}
+            </div>
+
+            <div>
+              <label
+                htmlFor="grade"
+                className="block text-lg opacity-85 mb-2 font-medium">
+                Grade
+              </label>
+              <select
+                id="grade"
+                value={formData.grade}
+                onChange={(e) => handleInputChange("grade", e.target.value)}
+                className="w-full px-4 py-3 text-lg bg-transparent border-[3px] border-white/80 rounded-[12px] text-white focus:border-[#809bc8] transition-all duration-300 h-12 focus:outline-none appearance-none cursor-pointer"
+                style={{
+                  backgroundImage:
+                    "url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xIDFMNiA2TDExIDEiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+Cjwvc3ZnPgo=')",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "right 16px center",
+                  backgroundSize: "16px",
+                }}>
+                <option
+                  value=""
+                  disabled
+                  className="bg-[#303030] text-gray-300">
+                  Select Grade
+                </option>
+                {grades.map((grade) => (
+                  <option
+                    key={grade}
+                    value={grade}
+                    className="bg-[#303030] text-white">
+                    Grade {grade}
+                  </option>
+                ))}
+              </select>
+              {errors.grade && (
+                <div className="mt-2 border border-red-500/50 bg-red-500/10 backdrop-blur-sm rounded-md p-3">
+                  <div className="text-red-400 text-sm">{errors.grade}</div>
+                </div>
+              )}
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label
+                  htmlFor="section"
+                  className="block text-lg opacity-85 mb-2 font-medium">
+                  Section
+                </label>
+                <input
+                  id="section"
+                  type="text"
+                  value={formData.section}
+                  onChange={(e) => handleInputChange("section", e.target.value)}
+                  className="w-full px-4 py-3 text-lg bg-transparent border-[3px] border-white/80 rounded-[12px] text-white focus:border-[#809bc8] transition-all duration-300 h-12 focus:outline-none"
+                  autoComplete="off"
+                />
+                {errors.section && (
+                  <div className="mt-2 border border-red-500/50 bg-red-500/10 backdrop-blur-sm rounded-md p-3">
+                    <div className="text-red-400 text-sm">{errors.section}</div>
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <label
+                  htmlFor="shift"
+                  className="block text-lg opacity-85 mb-2 font-medium">
+                  Shift
+                </label>
+                <select
+                  id="shift"
+                  value={formData.shift}
+                  onChange={(e) => handleInputChange("shift", e.target.value)}
+                  className="w-full px-4 py-3 text-lg bg-transparent border-[3px] border-white/80 rounded-[12px] text-white focus:border-[#809bc8] transition-all duration-300 h-12 focus:outline-none appearance-none cursor-pointer"
+                  style={{
+                    backgroundImage:
+                      "url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xIDFMNiA2TDExIDEiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+Cjwvc3ZnPgo=')",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "right 16px center",
+                    backgroundSize: "16px",
+                  }}>
+                  <option
+                    value=""
+                    disabled
+                    className="bg-[#303030] text-gray-300">
+                    Select Shift
+                  </option>
+                  {shifts.map((shift) => (
+                    <option
+                      key={shift}
+                      value={shift}
+                      className="bg-[#303030] text-white">
+                      {shift}
+                    </option>
+                  ))}
+                </select>
+                {errors.shift && (
+                  <div className="mt-2 border border-red-500/50 bg-red-500/10 backdrop-blur-sm rounded-md p-3">
+                    <div className="text-red-400 text-sm">{errors.shift}</div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 3:
+        return (
+          <div className="space-y-5">
+            <h2 className="text-2xl font-semibold text-white mb-6">Social</h2>
+            <p className="text-gray-400 text-sm mb-4">
+              These fields are optional
+            </p>
+
+            <div>
+              <label
+                htmlFor="facebook"
+                className="block text-lg opacity-85 mb-2 font-medium">
+                Facebook URL
+              </label>
+              <input
+                id="facebook"
+                type="url"
+                value={formData.facebook}
+                onChange={(e) => handleInputChange("facebook", e.target.value)}
+                className="w-full px-4 py-3 text-lg bg-transparent border-[3px] border-white/80 rounded-[12px] text-white focus:border-[#809bc8] transition-all duration-300 h-12 focus:outline-none"
+                autoComplete="off"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="instagram"
+                className="block text-lg opacity-85 mb-2 font-medium">
+                Instagram URL
+              </label>
+              <input
+                id="instagram"
+                type="url"
+                value={formData.instagram}
+                onChange={(e) => handleInputChange("instagram", e.target.value)}
+                className="w-full px-4 py-3 text-lg bg-transparent border-[3px] border-white/80 rounded-[12px] text-white focus:border-[#809bc8] transition-all duration-300 h-12 focus:outline-none"
+                autoComplete="off"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="discord"
+                className="block text-lg opacity-85 mb-2 font-medium">
+                Discord Username
+              </label>
+              <input
+                id="discord"
+                type="text"
+                value={formData.discord}
+                onChange={(e) => handleInputChange("discord", e.target.value)}
+                className="w-full px-4 py-3 text-lg bg-transparent border-[3px] border-white/80 rounded-[12px] text-white focus:border-[#809bc8] transition-all duration-300 h-12 focus:outline-none"
+                autoComplete="off"
+              />
+            </div>
+          </div>
+        );
+
+      case 4:
+        return (
+          <div className="space-y-5">
+            <h2 className="text-2xl font-semibold text-white mb-6">
+              Almost done!
+            </h2>
+
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-lg opacity-85 mb-2 font-medium">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={formData.password}
+                onChange={(e) => handleInputChange("password", e.target.value)}
+                className="w-full px-4 py-3 text-lg bg-transparent border-[3px] border-white/80 rounded-[12px] text-white focus:border-[#809bc8] transition-all duration-300 h-12 focus:outline-none"
+                autoComplete="off"
+              />
+              {errors.password && (
+                <div className="mt-2 border border-red-500/50 bg-red-500/10 backdrop-blur-sm rounded-md p-3">
+                  <div className="text-red-400 text-sm">{errors.password}</div>
+                </div>
+              )}
+            </div>
+
+            <div>
+              <label
+                htmlFor="confirmPassword"
+                className="block text-lg opacity-85 mb-2 font-medium">
+                Confirm Password
+              </label>
+              <input
+                id="confirmPassword"
+                type="password"
+                value={formData.confirmPassword}
+                onChange={(e) =>
+                  handleInputChange("confirmPassword", e.target.value)
+                }
+                className="w-full px-4 py-3 text-lg bg-transparent border-[3px] border-white/80 rounded-[12px] text-white focus:border-[#809bc8] transition-all duration-300 h-12 focus:outline-none"
+                autoComplete="off"
+              />
+              {errors.confirmPassword && (
+                <div className="mt-2 border border-red-500/50 bg-red-500/10 backdrop-blur-sm rounded-md p-3">
+                  <div className="text-red-400 text-sm">
+                    {errors.confirmPassword}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  // Chevron SVG components
+  const ChevronLeft = () => (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M15 18L9 12L15 6"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+
+  const ChevronRight = () => (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M9 18L15 12L9 6"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+
+  return (
+    <div className="min-h-screen bg-[#131314] text-white overflow-hidden relative">
+      {/* Shadow Effect */}
+      <div className="fixed h-full right-5 w-900px shadow-[-50px_0px_100px_50px_rgba(0,0,0,0.8)] z-5" />
+      {/* RSGA Text */}
+      <div className="fixed right-0 top-0 h-screen w-[130px] flex items-center justify-center z-10">
+        <h1
+          className="font-display font-light text-[200px] opacity-40 text-gray-400 whitespace-nowrap"
+          style={{
+            transform: "rotate(-90deg)",
+            transformOrigin: "center center",
+          }}>
+          RSGA
+        </h1>
+      </div>
+
+      {/* Animated Rectangle */}
+      <div
+        className="fixed w-[180px] h-[180px] bg-[#29313f] rounded-[20px] animate-rect-spin z-0"
+        style={{
+          left: "calc(50% + 50px)",
+          top: "calc(55% + 50px)",
+        }}
+      />
+
+      {/* Form Container */}
+      <div className="relative h-screen flex items-center justify-start pl-16">
+        <div className="w-full max-w-[550px] h-auto max-h-[85vh] bg-white/5 backdrop-blur-[6.5px] border-2 border-[#303030] rounded-[10px] flex flex-col items-center justify-center overflow-y-auto">
+          <div className="w-full px-8 py-8 flex flex-col items-center">
+            <h1 className="text-4xl md:text-5xl bg-gradient-to-r from-[#809bc8] to-[#a76fb8] bg-clip-text text-transparent uppercase font-bold text-center leading-tight mb-6">
+              Time to begin!
+            </h1>
+
+            <form onSubmit={handleSubmit} className="w-full max-w-[450px]">
+              {renderStep()}
+
+              <div className="flex justify-center items-center gap-4 mt-8">
+                {currentStep > 1 && (
+                  <button
+                    type="button"
+                    onClick={handlePrev}
+                    className="bg-[#303030] hover:bg-[#404040] text-white px-6 py-3 text-base font-medium border-none rounded-[10px] shadow-[0px_0px_7px_#809bc8] transition-all duration-300 hover:shadow-[0px_0px_15px_#809bc8] flex items-center gap-2 h-12 cursor-pointer">
+                    <ChevronLeft />
+                    Previous
+                  </button>
+                )}
+
+                {currentStep < 4 ? (
+                  <button
+                    type="button"
+                    onClick={handleNext}
+                    className="bg-[#303030] hover:bg-[#404040] text-white px-6 py-3 text-base font-medium border-none rounded-[10px] shadow-[0px_0px_7px_#809bc8] transition-all duration-300 hover:shadow-[0px_0px_15px_#809bc8] flex items-center gap-2 h-12 cursor-pointer">
+                    Next
+                    <ChevronRight />
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="bg-[#303030] hover:bg-[#404040] text-white px-8 py-3 text-base font-medium border-none rounded-[10px] shadow-[0px_0px_7px_#809bc8] transition-all duration-300 hover:shadow-[0px_0px_15px_#809bc8] disabled:opacity-50 disabled:cursor-not-allowed h-12 cursor-pointer">
+                    {isSubmitting ? "Submitting..." : "Submit"}
+                  </button>
+                )}
+              </div>
+
+              <div className="text-center mt-6">
+                <Link
+                  href="/login"
+                  className="text-[#809bc8] hover:text-[#a76fb8] transition-colors duration-300 text-base">
+                  Already have an account? Login here
+                </Link>
+              </div>
+            </form>
+
+            {/* Step Indicator */}
+            <div className="flex justify-center mt-6 space-x-3">
+              {[1, 2, 3, 4].map((step) => (
+                <div
+                  key={step}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    step === currentStep
+                      ? "bg-[#a76fb8] shadow-[0px_0px_10px_#a76fb8]"
+                      : step < currentStep
+                      ? "bg-[#809bc8]"
+                      : "bg-gray-600"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style jsx>{`
+        @keyframes rect-spin {
+          0% {
+            transform: rotate(70deg);
+            border-radius: 20px;
+            background-color: #29313f;
+          }
+          25% {
+            transform: rotate(140deg);
+            border-radius: 5px;
+            background-color: #809bc8;
+          }
+          50% {
+            transform: rotate(-15deg);
+            border-radius: 10px;
+            background-color: #a76fb8;
+          }
+          75% {
+            transform: rotate(35deg);
+            border-radius: 70px;
+            background-color: #809bc8;
+          }
+          100% {
+            transform: rotate(70deg);
+            border-radius: 20px;
+            background-color: #29313f;
+          }
+        }
+        .animate-rect-spin {
+          animation: rect-spin 20s infinite;
+        }
+      `}</style>
+    </div>
+  );
+}
