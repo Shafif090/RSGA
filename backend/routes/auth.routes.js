@@ -1,9 +1,14 @@
 import { Router } from "express";
+import { register, verify, login } from "../controllers/auth.controller.js";
 
 const authRouter = Router();
 
-authRouter.post("/register", (req, res) => res.send({ title: "Register" }));
-authRouter.post("/login", (req, res) => res.send({ title: "Login" }));
-authRouter.post("/log-out", (req, res) => res.send({ title: "Log out" }));
+// Public routes
+authRouter.post("/register", register);
+authRouter.get("/verify/:token", verify);
+authRouter.post("/login", login);
+
+// Protected routes (will be added later)
+// authRouter.post("/logout", logout);
 
 export default authRouter;
