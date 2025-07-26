@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  fullName      String
+  email         String    @unique
+  phoneNumber   String
+  password      String
+  verified      Boolean   @default(false)
+  verificationToken String?
+  school        String?
+  grade         Int?
+  section       String?
+  shift         String?
+  facebook      String?
+  instagram   String?
+  discord       String?
+  avatarUrl     String?
+  hubId         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  stats         Stat[]
+  matches       Match[]
+  hub           Hub?      @relation(fields: [hubId], references: [id])
+}
+
+model Hub {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  location  String
+  users     User[]
+  matches   Match[]
+  createdAt DateTime @default(now())
+}
+
+model Match {
+  id        String   @id @default(uuid())
+  hubId     String
+  teamA     String
+  teamB     String
+  date      DateTime
+  time      String
+  status    String   @default("scheduled")
+  result    String?
+  createdAt DateTime @default(now())
+  stats     Stat[]
+  hub       Hub      @relation(fields: [hubId], references: [id])
+}
+
+model Stat {
+  id          String   @id @default(uuid())
+  userId      String
+  matchId     String
+  goals       Int      @default(0)
+  assists     Int      @default(0)
+  yellowCards Int      @default(0)
+  redCards    Int      @default(0)
+  appearance  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+  match       Match    @relation(fields: [matchId], references: [id])
+}
