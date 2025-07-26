@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-
+import { blanka } from "../../fonts";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -10,7 +10,7 @@ interface FormData {
   email: string;
   phoneNumber: string;
   school: string;
-  grade: string;
+  grade: number | null;
   section: string;
   shift: string;
   facebook: string;
@@ -20,8 +20,8 @@ interface FormData {
   confirmPassword: string;
 }
 
-const grades = ["6", "7", "8", "9", "10", "11", "12"];
-const shifts = ["Morning", "Day", "Evening"];
+const grades = [6, 7, 8, 9, 10, 11, 12];
+const shifts = ["Morning", "Day"];
 
 export default function RegisterPage() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -30,7 +30,7 @@ export default function RegisterPage() {
     email: "",
     phoneNumber: "",
     school: "",
-    grade: "",
+    grade: null,
     section: "",
     shift: "",
     facebook: "",
@@ -62,7 +62,7 @@ export default function RegisterPage() {
         break;
       case 2:
         if (!formData.school.trim()) newErrors.school = "School is required";
-        if (!formData.grade) newErrors.grade = "Grade is required";
+        if (formData.grade === null) newErrors.grade = "Grade is required";
         if (!formData.section.trim()) newErrors.section = "Section is required";
         if (!formData.shift) newErrors.shift = "Shift is required";
         break;
@@ -72,8 +72,8 @@ export default function RegisterPage() {
       case 4:
         if (!formData.password.trim()) {
           newErrors.password = "Password is required";
-        } else if (formData.password.length < 6) {
-          newErrors.password = "Password must be at least 6 characters";
+        } else if (formData.password.length < 8) {
+          newErrors.password = "Password must be at least 8 characters";
         }
         if (!formData.confirmPassword.trim()) {
           newErrors.confirmPassword = "Confirm password is required";
@@ -111,7 +111,10 @@ export default function RegisterPage() {
     setIsSubmitting(false);
   };
 
-  const handleInputChange = (field: keyof FormData, value: string) => {
+  const handleInputChange = (
+    field: keyof FormData,
+    value: string | number | null
+  ) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: "" }));
@@ -234,8 +237,13 @@ export default function RegisterPage() {
               </label>
               <select
                 id="grade"
-                value={formData.grade}
-                onChange={(e) => handleInputChange("grade", e.target.value)}
+                value={formData.grade ?? ""} // Use nullish coalescing to show empty for null
+                onChange={(e) =>
+                  handleInputChange(
+                    "grade",
+                    e.target.value ? Number(e.target.value) : null
+                  )
+                }
                 className="w-full px-4 py-3 text-lg bg-transparent border-[3px] border-white/80 rounded-[12px] text-white focus:border-[#809bc8] transition-all duration-300 h-12 focus:outline-none appearance-none cursor-pointer"
                 style={{
                   backgroundImage:
@@ -335,10 +343,6 @@ export default function RegisterPage() {
         return (
           <div className="space-y-5">
             <h2 className="text-2xl font-semibold text-white mb-6">Social</h2>
-            <p className="text-gray-400 text-sm mb-4">
-              These fields are optional
-            </p>
-
             <div>
               <label
                 htmlFor="facebook"
@@ -489,9 +493,9 @@ export default function RegisterPage() {
       {/* Shadow Effect */}
       <div className="fixed h-full right-5 w-900px shadow-[-50px_0px_100px_50px_rgba(0,0,0,0.8)] z-5" />
       {/* RSGA Text */}
-      <div className="fixed right-0 top-0 h-screen w-[130px] flex items-center justify-center z-10">
+      <div className="fixed right-10 top-0 h-screen w-[130px] flex items-center justify-center z-10">
         <h1
-          className="font-display font-light text-[200px] opacity-40 text-gray-400 whitespace-nowrap"
+          className={`font-display font-light text-[200px] opacity-40 text-gray-400 whitespace-nowrap ${blanka.className}`}
           style={{
             transform: "rotate(-90deg)",
             transformOrigin: "center center",

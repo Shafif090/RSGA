@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-
+import { blanka } from "../../fonts";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -56,9 +56,9 @@ export default function LoginPage() {
       {/* Shadow Effect */}
       <div className="fixed h-full right-5 w-900px shadow-[-50px_0px_100px_50px_rgba(0,0,0,0.8)] z-5" />
       {/* RSGA Text */}
-      <div className="fixed right-0 top-0 h-screen w-[130px] flex items-center justify-center z-10">
+      <div className="fixed right-10 top-0 h-screen w-[130px] flex items-center justify-center z-10">
         <h1
-          className="font-display font-light text-[200px] opacity-40 text-gray-400 whitespace-nowrap"
+          className={`font-display font-light text-[200px] opacity-40 text-gray-400 whitespace-nowrap ${blanka.className}`}
           style={{
             transform: "rotate(-90deg)",
             transformOrigin: "center center",
