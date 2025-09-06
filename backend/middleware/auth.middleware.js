@@ -1,10 +1,17 @@
-import jwt from "jsonwebtoken";
-import { JWT_SECRET } from "../config/env.js";
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../config/env.js");
 
-export const authenticate = (req, res, next) => {
-  // Get token from header
+const authenticate = (req, res, next) => {
+  // Try to get token from Authorization header or cookie
+  let token = null;
   const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
+  if (authHeader && authHeader.startsWith("Bearer ")) {
+    token = authHeader.split(" ")[1];
+  }
+  // Always prefer cookie if present (browser will send it automatically)
+  if (req.cookies && req.cookies.token) {
+    token = req.cookies.token;
+  }
 
   if (!token) {
     return res.status(401).json({
@@ -25,3 +32,5 @@ export const authenticate = (req, res, next) => {
     });
   }
 };
+
+module.exports = { authenticate };

@@ -24,7 +24,7 @@ const teamMembers = [
   {
     name: "Dracula bhai",
     role: "Moderator",
-    bio: "Passionate about sports analytics and community building. Leading RSGA with vision and dedication.",
+    bio: "Passionate about sports and community building. Leading RSGA with vision and dedication.",
     avatar: "/placeholder.svg?height=120&width=120",
     social: {
       facebook: "#",
@@ -46,7 +46,7 @@ const teamMembers = [
   {
     name: "Alex Rahman",
     role: "Technical Director",
-    bio: "Expert in sports technology and data analysis, driving innovation in athletic performance.",
+    bio: "Expert in sports technology and data, driving innovation in athletic performance.",
     avatar: "/placeholder.svg?height=120&width=120",
     social: {
       facebook: "#",
@@ -78,7 +78,7 @@ const achievements = [
   "Regional Sports Excellence Award 2023",
   "Best Digital Sports Platform 2022",
   "Community Impact Recognition 2021",
-  "Innovation in Sports Analytics 2020",
+  "Innovation in Sports 2020",
 ];
 
 export default function AboutPage() {
@@ -91,9 +91,9 @@ export default function AboutPage() {
             ABOUT RSGA
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Regional Sports & Gaming Analytics is a pioneering platform
-            dedicated to revolutionizing sports performance through data-driven
-            insights and community engagement.
+            Regional Sports & Gaming is a pioneering platform dedicated to
+            revolutionizing sports performance through insights and community
+            engagement.
           </p>
         </div>
 
@@ -111,8 +111,8 @@ export default function AboutPage() {
             <CardContent>
               <p className="text-gray-300 leading-relaxed">
                 To empower athletes and sports communities through innovative
-                analytics, fostering excellence and creating opportunities for
-                growth in competitive sports.
+                fostering excellence and creating opportunities for growth in
+                competitive sports.
               </p>
             </CardContent>
           </Card>
@@ -128,9 +128,8 @@ export default function AboutPage() {
             </CardHeader>
             <CardContent>
               <p className="text-gray-300 leading-relaxed">
-                To become the leading sports analytics platform in the region,
-                connecting athletes, schools, and communities through
-                data-driven insights.
+                To become the leading sports platform in the region, connecting
+                athletes, schools, and communities through insights.
               </p>
             </CardContent>
           </Card>

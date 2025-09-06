@@ -30,18 +30,55 @@ export default function LoginPage() {
     return Object.keys(newErrors).length === 0;
   };
 
+  // API base URL (set NEXT_PUBLIC_API_BASE_URL in .env.local)
+  const API_BASE_URL =
+    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5500";
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateForm()) return;
 
     setIsSubmitting(true);
+    setErrors((prev) => ({ ...prev, form: "" }));
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
 
-    console.log("Login data:", formData);
-    setIsSubmitting(false);
+      if (res.ok) {
+        // Redirect to dashboard or home page
+        window.location.href = "/dashboard";
+        return;
+      }
+
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 400 || res.status === 401) {
+        setErrors((prev) => ({
+          ...prev,
+          form: data?.message || "Invalid credentials. Please try again.",
+        }));
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          form: data?.message || "Login failed. Try again.",
+        }));
+      }
+    } catch {
+      setErrors((prev) => ({
+        ...prev,
+        form: "Network error. Please try again.",
+      }));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -133,6 +170,13 @@ export default function LoginPage() {
                   </div>
                 )}
               </div>
+
+              {/* Top-level form error */}
+              {errors.form && (
+                <div className="mt-4 border border-red-500/50 bg-red-500/10 rounded-md p-3">
+                  <div className="text-red-400 text-sm">{errors.form}</div>
+                </div>
+              )}
 
               <div className="pt-4">
                 <button

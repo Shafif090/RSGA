@@ -1,5 +1,13 @@
-import { config } from "dotenv";
+const dotenv = require("dotenv");
+dotenv.config({ path: ".env" });
 
-config({ path: ".env" }); // Always try to load .env
+const { PORT, NODE_ENV, JWT_SECRET, JWT_EXPIRES_IN, DATABASE_URL } =
+  process.env;
 
-export const { PORT, NODE_ENV } = process.env;
+module.exports = {
+  PORT,
+  NODE_ENV,
+  JWT_SECRET,
+  JWT_EXPIRES_IN,
+  DATABASE_URL,
+};

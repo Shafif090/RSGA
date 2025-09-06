@@ -1,41 +1,60 @@
-import prisma from "../config/prisma.js";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { JWT_SECRET, JWT_EXPIRES_IN } from "../config/env.js";
+const prisma = require("../config/prisma.js");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET, JWT_EXPIRES_IN } = require("../config/env.js");
 
 // Hash password
-export const hashPassword = async (password) => {
+exports.hashPassword = async (password) => {
   const salt = await bcrypt.genSalt(parseInt(process.env.BCRYPT_SALT_ROUNDS));
   return bcrypt.hash(password, salt);
 };
 
 // Verify password
-export const verifyPassword = async (password, hashedPassword) => {
+exports.verifyPassword = async (password, hashedPassword) => {
   return bcrypt.compare(password, hashedPassword);
 };
 
 // Generate JWT token
-export const generateToken = (user) => {
+exports.generateToken = (user) => {
   return jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
     expiresIn: JWT_EXPIRES_IN,
   });
 };
 
 // Register user
-export const registerUser = async (userData) => {
+exports.registerUser = async (userData) => {
   // Check if user exists
   const existingUser = await prisma.user.findFirst({
     where: {
       OR: [{ email: userData.email }, { phoneNumber: userData.phoneNumber }],
     },
   });
-
   if (existingUser) {
     throw new Error("User with this email or phone number already exists");
   }
 
+  // Validate required fields
+  if (
+    !userData.fullName ||
+    !userData.email ||
+    !userData.phoneNumber ||
+    !userData.password
+  ) {
+    throw new Error("Missing required fields");
+  }
+  if (userData.password !== userData.confirmPassword) {
+    throw new Error("Passwords do not match");
+  }
+  if (
+    !userData.communities ||
+    !Array.isArray(userData.communities) ||
+    userData.communities.length === 0
+  ) {
+    throw new Error("At least one community must be selected");
+  }
+
   // Hash password
-  const hashedPassword = await hashPassword(userData.password);
+  const hashedPassword = await exports.hashPassword(userData.password);
 
   // Create verification token
   const verificationToken =
@@ -60,6 +79,65 @@ export const registerUser = async (userData) => {
     },
   });
 
+  // Save communities
+  for (const community of userData.communities) {
+    await prisma.userCommunity.create({
+      data: {
+        userId: user.id,
+        type: community,
+      },
+    });
+  }
+
+  // Save games (accepts IDs or names). If a name is provided and not found, create it.
+  if (userData.games && Array.isArray(userData.games)) {
+    for (const g of userData.games) {
+      let gameRecord = null;
+      const isUuid =
+        typeof g === "string" &&
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+          g
+        );
+
+      if (isUuid) {
+        gameRecord = await prisma.game.findUnique({ where: { id: g } });
+      } else {
+        gameRecord = await prisma.game.findUnique({ where: { name: g } });
+        if (!gameRecord) {
+          // Infer community type from name (fallback to ESPORTS unless it's clearly outdoor)
+          const inferredType =
+            String(g).toLowerCase() === "futsal" ? "OUTDOOR" : "ESPORTS";
+          gameRecord = await prisma.game.create({
+            data: { name: g, type: inferredType },
+          });
+        }
+      }
+
+      if (!gameRecord) {
+        // Skip invalid references silently; alternatively, throw an error
+        continue;
+      }
+
+      await prisma.userGame.create({
+        data: {
+          userId: user.id,
+          gameId: gameRecord.id,
+        },
+      });
+    }
+  }
+
+  // Save hub assignment
+  if (userData.hubId) {
+    await prisma.userHub.create({
+      data: {
+        userId: user.id,
+        hubId: userData.hubId,
+        status: "ASSIGNED",
+      },
+    });
+  }
+
   // TODO: Implement email sending here
   console.log(`Verification token for ${user.email}: ${verificationToken}`);
 
@@ -67,7 +145,7 @@ export const registerUser = async (userData) => {
 };
 
 // Verify email
-export const verifyEmail = async (token) => {
+exports.verifyEmail = async (token) => {
   const user = await prisma.user.findUnique({
     where: { verificationToken: token },
   });
@@ -88,7 +166,7 @@ export const verifyEmail = async (token) => {
 };
 
 // Login user
-export const loginUser = async (email, password) => {
+exports.loginUser = async (email, password) => {
   const user = await prisma.user.findUnique({
     where: { email },
   });
@@ -101,11 +179,11 @@ export const loginUser = async (email, password) => {
     throw new Error("Please verify your email first");
   }
 
-  const isPasswordValid = await verifyPassword(password, user.password);
+  const isPasswordValid = await exports.verifyPassword(password, user.password);
   if (!isPasswordValid) {
     throw new Error("Invalid credentials");
   }
 
-  const token = generateToken(user);
+  const token = exports.generateToken(user);
   return { user, token };
 };

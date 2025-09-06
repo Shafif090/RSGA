@@ -5,13 +5,37 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl= env("DIRECT_URL")
 }
 
+// -------------------------------
+// Enums
+// -------------------------------
+enum CommunityType {
+  ESPORTS
+  OUTDOOR
+}
+
+enum AssignmentStatus {
+  PENDING
+  ASSIGNED
+  REJECTED
+}
+
+enum MatchStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+}
+
+// -------------------------------
+// Core Models
+// -------------------------------
 model User {
   id            String    @id @default(uuid())
   fullName      String
   email         String    @unique
-  phoneNumber   String
+  phoneNumber   String    @unique
   password      String
   verified      Boolean   @default(false)
   verificationToken String?
@@ -20,24 +44,96 @@ model User {
   section       String?
   shift         String?
   facebook      String?
-  instagram   String?
+  instagram     String?
   discord       String?
   avatarUrl     String?
+  // Legacy/primary hub reference (optional). Multi-hub membership is tracked in UserHub.
   hubId         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  stats         Stat[]
-  matches       Match[]
-  hub           Hub?      @relation(fields: [hubId], references: [id])
+  
+  // Aggregated counters (optional convenience for leaderboards)
+  totalGoals        Int @default(0)
+  totalAssists      Int @default(0)
+  totalAppearances  Int @default(0)
+  yellowCards       Int @default(0)
+  redCards          Int @default(0)
+
+  // Relations
+  stats           Stat[]
+  hub             Hub?      @relation(fields: [hubId], references: [id])
+  userGames       UserGame[]
+  userCommunities UserCommunity[]
+  userHubs        UserHub[]
 }
 
 model Hub {
   id        String   @id @default(uuid())
-  name      String   @unique
+  name      String
+  type      CommunityType
   location  String
-  users     User[]
-  matches   Match[]
+  capacity  Int      @default(30)
+  gameId    String?
   createdAt DateTime @default(now())
+
+  // Relations
+  users     User[]   // users that set this as their primary hub (legacy)
+  matches   Match[]
+  game      Game?    @relation(fields: [gameId], references: [id])
+  userHubs  UserHub[]
+
+  @@unique([type, name], name: "type_name")
+}
+
+model Game {
+  id        String        @id @default(uuid())
+  name      String        @unique
+  type      CommunityType
+  createdAt DateTime      @default(now())
+
+  // Relations
+  hubs      Hub[]
+  userGames UserGame[]
+}
+
+// Join table for user <-> game selections
+model UserGame {
+  id        String   @id @default(uuid())
+  userId    String
+  gameId    String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+  game      Game     @relation(fields: [gameId], references: [id])
+
+  @@unique([userId, gameId])
+}
+
+// Tracks which communities (ESPORTS/OUTDOOR) a user joined
+model UserCommunity {
+  id        String        @id @default(uuid())
+  userId    String
+  type      CommunityType
+  createdAt DateTime      @default(now())
+
+  user      User          @relation(fields: [userId], references: [id])
+
+  @@unique([userId, type])
+}
+
+// Many-to-many between users and hubs with assignment status (capacity control)
+model UserHub {
+  id          String           @id @default(uuid())
+  userId      String
+  hubId       String
+  status      AssignmentStatus @default(PENDING)
+  assignedBy  String?
+  createdAt   DateTime         @default(now())
+
+  user        User             @relation(fields: [userId], references: [id])
+  hub         Hub              @relation(fields: [hubId], references: [id])
+
+  @@unique([userId, hubId])
 }
 
 model Match {
@@ -47,7 +143,7 @@ model Match {
   teamB     String
   date      DateTime
   time      String
-  status    String   @default("scheduled")
+  status    MatchStatus @default(SCHEDULED)
   result    String?
   createdAt DateTime @default(now())
   stats     Stat[]

@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Image from "next/image";
 
 import {
   Select,
@@ -22,7 +21,6 @@ import {
   Trophy,
   Search,
   Star,
-  ArrowRight,
   CalendarDays,
 } from "lucide-react";
 
@@ -77,9 +75,9 @@ const events = [
   },
   {
     id: 4,
-    title: "Sports Analytics Seminar",
+    title: "Sports Seminar",
     description:
-      "Discover how data analytics is revolutionizing modern sports performance and strategy.",
+      "Discover how modern sports performance and strategy are evolving.",
     date: "2024-01-30",
     time: "11:00 AM",
     location: "Conference Hall A",
@@ -242,14 +240,7 @@ export default function EventsPage() {
                   key={event.id}
                   className="bg-white/5 backdrop-blur-md border-white/10 hover:bg-white/10 transition-all duration-300 overflow-hidden">
                   <div className="relative">
-                    <Image
-                      src={event.image || "/placeholder.svg"}
-                      alt={event.title}
-                      width={400}
-                      height={200}
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="absolute top-4 left-4">
+                    <div className="absolute top-4 left-8">
                       <Badge
                         className={`${getStatusColor(
                           event.status
@@ -257,13 +248,13 @@ export default function EventsPage() {
                         {event.status.toUpperCase()}
                       </Badge>
                     </div>
-                    <div className="absolute top-4 right-4">
+                    <div className="absolute top-4 right-10">
                       <Badge className="bg-gradient-to-r from-[#809bc8] to-[#a76fb8] text-white">
                         {event.category}
                       </Badge>
                     </div>
                   </div>
-                  <CardContent className="p-6">
+                  <CardContent className="p-8">
                     <h3 className="text-xl font-bold text-white mb-2">
                       {event.title}
                     </h3>
@@ -296,11 +287,6 @@ export default function EventsPage() {
                         <span>Prize: {event.prize}</span>
                       </div>
                     </div>
-
-                    <Button className="w-full bg-gradient-to-r from-[#809bc8] to-[#a76fb8] hover:from-[#7088b5] hover:to-[#9660a5] text-white">
-                      View Details
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
                   </CardContent>
                 </Card>
               ))}

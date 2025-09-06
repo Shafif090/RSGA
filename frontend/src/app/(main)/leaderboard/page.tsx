@@ -23,103 +23,64 @@ import {
   Target,
 } from "lucide-react";
 
-// Mock data for the leaderboard
-const leaderboardData = [
-  {
-    id: 1,
-    name: "Ching chong bhai",
-    school: "Ching Low School",
-    points: 2450,
-    rank: 1,
+import { useEffect } from "react";
 
-    avatar: "/placeholder.svg?height=60&width=60",
-    category: "Football",
-  },
-  {
-    id: 2,
-    name: "Pong bhai",
-    school: "Pong Ultra High School",
-    points: 2380,
-    rank: 2,
-    avatar: "/placeholder.svg?height=60&width=60",
-    category: "Football",
-  },
-  {
-    id: 3,
-    name: "Ping bhai",
-    school: "Channghua High School",
-    points: 2290,
-    rank: 3,
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5500";
 
-    avatar: "/placeholder.svg?height=60&width=60",
-    category: "Football",
-  },
-  {
-    id: 4,
-    name: "Alex Rahman",
-    school: "Dhaka International School",
-    points: 2180,
-    rank: 4,
-
-    avatar: "/placeholder.svg?height=60&width=60",
-    category: "Football",
-  },
-  {
-    id: 5,
-    name: "Sarah Khan",
-    school: "Chittagong Grammar School",
-    points: 2150,
-    rank: 5,
-
-    avatar: "/placeholder.svg?height=60&width=60",
-    category: "Football",
-  },
-  {
-    id: 6,
-    name: "Mohammad Ali",
-    school: "Sylhet Cadet College",
-    points: 2090,
-    rank: 6,
-
-    avatar: "/placeholder.svg?height=60&width=60",
-    category: "Football",
-  },
-  {
-    id: 7,
-    name: "Fatima Ahmed",
-    school: "Rajshahi College",
-    points: 2020,
-    rank: 7,
-
-    avatar: "/placeholder.svg?height=60&width=60",
-    category: "Football",
-  },
-  {
-    id: 8,
-    name: "Karim Hassan",
-    school: "Barisal Zilla School",
-    points: 1980,
-    rank: 8,
-    avatar: "/placeholder.svg?height=60&width=60",
-    category: "Football",
-  },
-];
-
-const stats = [
-  { label: "Total Players", value: "1,247", icon: Users },
-  { label: "Active This Week", value: "892", icon: TrendingUp },
-  { label: "Total Points Awarded", value: "45,230", icon: Target },
-];
+interface LeaderboardPlayer {
+  id: string;
+  name: string;
+  avatar?: string;
+  goals: number;
+  assists: number;
+  appearances: number;
+  yellowCards: number;
+  redCards: number;
+  points: number;
+  rank: number;
+  school?: string; // optional, fallback if not present
+}
 
 export default function LeaderboardPage() {
+  const [leaderboardData, setLeaderboardData] = useState<LeaderboardPlayer[]>(
+    []
+  );
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedPeriod, setSelectedPeriod] = useState("all-time");
 
+  useEffect(() => {
+    async function fetchLeaderboard() {
+      setLoading(true);
+      setError("");
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/v1/leaderboard`, {
+          credentials: "include",
+        });
+        if (!res.ok) {
+          setError("Failed to load leaderboard.");
+          setLoading(false);
+          return;
+        }
+        const data = await res.json();
+        setLeaderboardData(data.leaderboard || []);
+      } catch {
+        setError("Network error. Could not load leaderboard.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchLeaderboard();
+  }, []);
+
   const filteredData = leaderboardData.filter(
     (player) =>
       player.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      player.school.toLowerCase().includes(searchTerm.toLowerCase())
+      (player.school &&
+        player.school.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const getRankIcon = (rank: number) => {
@@ -138,6 +99,32 @@ export default function LeaderboardPage() {
         );
     }
   };
+
+  // Stats cards can be static or fetched from backend in future
+  const stats = [
+    { label: "Total Players", value: leaderboardData.length, icon: Users },
+    { label: "Active This Week", value: "-", icon: TrendingUp },
+    {
+      label: "Total Points Awarded",
+      value: leaderboardData.reduce((acc, p) => acc + (p.points || 0), 0),
+      icon: Target,
+    },
+  ];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white">
+        Loading leaderboard...
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-red-400">
+        {error}
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#131314] text-white">
@@ -188,18 +175,22 @@ export default function LeaderboardPage() {
                 </div>
                 <Avatar className="w-16 h-16 mb-3 border-4 border-gray-400">
                   <AvatarImage
-                    src={leaderboardData[1].avatar || "/placeholder.svg"}
+                    src={leaderboardData[1]?.avatar || "/placeholder.svg"}
                   />
-                  <AvatarFallback>PB</AvatarFallback>
+                  {!leaderboardData[1]?.avatar && (
+                    <span className="text-3xl md:text-4xl font-bold flex items-center justify-center w-full h-full text-white">
+                      {leaderboardData[1]?.name?.[0] || "-"}
+                    </span>
+                  )}
                 </Avatar>
                 <h3 className="font-bold text-white text-center">
-                  {leaderboardData[1].name}
+                  {leaderboardData[1]?.name}
                 </h3>
                 <p className="text-sm text-gray-400 text-center">
-                  {leaderboardData[1].school}
+                  {leaderboardData[1]?.school || "-"}
                 </p>
                 <p className="text-lg font-bold text-[#a76fb8]">
-                  {leaderboardData[1].points} pts
+                  {leaderboardData[1]?.points} pts
                 </p>
               </div>
 
@@ -210,18 +201,22 @@ export default function LeaderboardPage() {
                 </div>
                 <Avatar className="w-20 h-20 mb-3 border-4 border-yellow-500">
                   <AvatarImage
-                    src={leaderboardData[0].avatar || "/placeholder.svg"}
+                    src={leaderboardData[0]?.avatar || "/placeholder.svg"}
                   />
-                  <AvatarFallback>CC</AvatarFallback>
+                  {!leaderboardData[0]?.avatar && (
+                    <span className="text-3xl md:text-4xl font-bold flex items-center justify-center w-full h-full text-white">
+                      {leaderboardData[0]?.name?.[0] || "-"}
+                    </span>
+                  )}
                 </Avatar>
                 <h3 className="font-bold text-white text-center">
-                  {leaderboardData[0].name}
+                  {leaderboardData[0]?.name}
                 </h3>
                 <p className="text-sm text-gray-400 text-center">
-                  {leaderboardData[0].school}
+                  {leaderboardData[0]?.school || "-"}
                 </p>
                 <p className="text-xl font-bold text-[#a76fb8]">
-                  {leaderboardData[0].points} pts
+                  {leaderboardData[0]?.points} pts
                 </p>
               </div>
 
@@ -232,18 +227,22 @@ export default function LeaderboardPage() {
                 </div>
                 <Avatar className="w-16 h-16 mb-3 border-4 border-amber-600">
                   <AvatarImage
-                    src={leaderboardData[2].avatar || "/placeholder.svg"}
+                    src={leaderboardData[2]?.avatar || "/placeholder.svg"}
                   />
-                  <AvatarFallback>PB</AvatarFallback>
+                  {!leaderboardData[2]?.avatar && (
+                    <span className="text-3xl md:text-4xl font-bold flex items-center justify-center w-full h-full text-white">
+                      {leaderboardData[2]?.name?.[0] || "-"}
+                    </span>
+                  )}
                 </Avatar>
                 <h3 className="font-bold text-white text-center">
-                  {leaderboardData[2].name}
+                  {leaderboardData[2]?.name}
                 </h3>
                 <p className="text-sm text-gray-400 text-center">
-                  {leaderboardData[2].school}
+                  {leaderboardData[2]?.school || "-"}
                 </p>
                 <p className="text-lg font-bold text-[#a76fb8]">
-                  {leaderboardData[2].points} pts
+                  {leaderboardData[2]?.points} pts
                 </p>
               </div>
             </div>
@@ -325,7 +324,9 @@ export default function LeaderboardPage() {
                       <h3 className="font-semibold text-white">
                         {player.name}
                       </h3>
-                      <p className="text-sm text-gray-400">{player.school}</p>
+                      <p className="text-sm text-gray-400">
+                        {player.school || "-"}
+                      </p>
                     </div>
                   </div>
 
