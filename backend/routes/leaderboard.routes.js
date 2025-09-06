@@ -9,10 +9,7 @@ leaderboardRouter.get("/", authenticate, async (req, res) => {
   try {
     // Get top 10 users by points (totalGoals + totalAssists as example)
     const users = await prisma.user.findMany({
-      orderBy: [
-        { totalGoals: "desc" },
-        { totalAssists: "desc" },
-      ],
+      orderBy: [{ totalGoals: "desc" }, { totalAssists: "desc" }],
       take: 10,
       select: {
         id: true,
@@ -37,7 +34,7 @@ leaderboardRouter.get("/", authenticate, async (req, res) => {
       appearances: user.totalAppearances,
       yellowCards: user.yellowCards,
       redCards: user.redCards,
-      points: user.totalGoals * 3 + user.totalAssists, // Example scoring
+      points: user.totalGoals * 3 + user.totalAssists, // simple scoring rule
     }));
 
     res.json({ leaderboard });

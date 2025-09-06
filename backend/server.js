@@ -43,6 +43,9 @@ app.use("/api/v1/auth", require("./routes/auth"));
 app.use("/api/v1/users", require("./routes/user.routes.js"));
 app.use("/api/v1/dashboard", require("./routes/dashboard.routes.js"));
 app.use("/api/v1/leaderboard", require("./routes/leaderboard.routes.js"));
+app.use("/api/v1/matches", require("./routes/matches.routes.js"));
+app.use("/api/v1/events", require("./routes/events.routes.js"));
+app.use("/api/v1/admin", require("./routes/admin.routes.js"));
 
 // 404 fallback (JSON)
 app.use((_req, res) => res.status(404).json({ message: "Not Found" }));

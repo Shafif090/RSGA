@@ -1,6 +1,6 @@
-import { getDashboardData } from "../services/dashboard.service.js";
+const { getDashboardData } = require("../services/dashboard.service.js");
 
-export const getDashboard = async (req, res) => {
+const getDashboard = async (req, res) => {
   try {
     const userId = req.user.id;
     const dashboardData = await getDashboardData(userId);
@@ -16,3 +16,5 @@ export const getDashboard = async (req, res) => {
     });
   }
 };
+
+module.exports = { getDashboard };

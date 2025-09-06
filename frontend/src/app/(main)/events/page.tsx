@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
 import {
   Select,
   SelectContent,
@@ -16,7 +15,6 @@ import {
 import {
   Calendar,
   MapPin,
-  Users,
   Clock,
   Trophy,
   Search,
@@ -24,137 +22,68 @@ import {
   CalendarDays,
 } from "lucide-react";
 
-const events = [
-  {
-    id: 1,
-    title: "Inter-School Football Championship",
-    description:
-      "Annual championship featuring top schools from across the region competing for the ultimate trophy.",
-    date: "2024-01-15",
-    time: "09:00 AM",
-    location: "Central Sports Complex",
-    category: "Football",
-    status: "upcoming",
-    participants: 16,
-    maxParticipants: 16,
-    prize: "$5,000",
-    image: "/placeholder.svg?height=200&width=400",
-    featured: true,
-  },
-  {
-    id: 2,
-    title: "Basketball Skills Workshop",
-    description:
-      "Learn advanced basketball techniques from professional coaches and improve your game.",
-    date: "2024-01-20",
-    time: "02:00 PM",
-    location: "Indoor Basketball Court",
-    category: "Basketball",
-    status: "upcoming",
-    participants: 8,
-    maxParticipants: 20,
-    prize: "Certificates",
-    image: "/placeholder.svg?height=200&width=400",
-    featured: false,
-  },
-  {
-    id: 3,
-    title: "Cricket Tournament Finals",
-    description:
-      "The ultimate showdown between the top 4 teams in our regional cricket league.",
-    date: "2024-01-25",
-    time: "10:00 AM",
-    location: "Main Cricket Ground",
-    category: "Cricket",
-    status: "upcoming",
-    participants: 4,
-    maxParticipants: 4,
-    prize: "$3,000",
-    image: "/placeholder.svg?height=200&width=400",
-    featured: true,
-  },
-  {
-    id: 4,
-    title: "Sports Seminar",
-    description:
-      "Discover how modern sports performance and strategy are evolving.",
-    date: "2024-01-30",
-    time: "11:00 AM",
-    location: "Conference Hall A",
-    category: "Seminar",
-    status: "upcoming",
-    participants: 45,
-    maxParticipants: 100,
-    prize: "Knowledge",
-    image: "/placeholder.svg?height=200&width=400",
-    featured: false,
-  },
-  {
-    id: 5,
-    title: "Winter Sports Festival",
-    description:
-      "Multi-sport festival celebrating winter athletics with various competitions and activities.",
-    date: "2024-02-05",
-    time: "08:00 AM",
-    location: "Sports Campus",
-    category: "Multi-Sport",
-    status: "upcoming",
-    participants: 120,
-    maxParticipants: 200,
-    prize: "$10,000",
-    image: "/placeholder.svg?height=200&width=400",
-    featured: true,
-  },
-  {
-    id: 6,
-    title: "Football League Season Opener",
-    description:
-      "Kick off the new season with exciting matches and team presentations.",
-    date: "2023-12-10",
-    time: "03:00 PM",
-    location: "Stadium A",
-    category: "Football",
-    status: "completed",
-    participants: 12,
-    maxParticipants: 12,
-    prize: "$2,000",
-    image: "/placeholder.svg?height=200&width=400",
-    featured: false,
-  },
-];
+type EventItem = {
+  id: string;
+  title: string;
+  subtitle?: string | null;
+  scheduledAt: string;
+  location: string;
+  prize?: string | null;
+};
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
 
 export default function EventsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedStatus, setSelectedStatus] = useState("all");
+  const [events, setEvents] = useState<EventItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>("");
 
-  const filteredEvents = events.filter((event) => {
-    const matchesSearch =
-      event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      event.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory =
-      selectedCategory === "all" || event.category === selectedCategory;
-    const matchesStatus =
-      selectedStatus === "all" || event.status === selectedStatus;
-
-    return matchesSearch && matchesCategory && matchesStatus;
-  });
-
-  const featuredEvents = filteredEvents.filter((event) => event.featured);
-  const regularEvents = filteredEvents.filter((event) => !event.featured);
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "upcoming":
-        return "bg-blue-500";
-      case "ongoing":
-        return "bg-green-500";
-      case "completed":
-        return "bg-gray-500";
-      default:
-        return "bg-gray-500";
+  useEffect(() => {
+    async function load() {
+      setLoading(true);
+      setError("");
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/v1/events`, {
+          credentials: "include",
+        });
+        if (!res.ok) throw new Error(await res.text());
+        const data = await res.json();
+        setEvents(data.events);
+      } catch {
+        setError("Failed to load events");
+      } finally {
+        setLoading(false);
+      }
     }
+    load();
+  }, []);
+
+  // Auto status helpers
+  const isEventCompleted = (scheduledAt: string) => {
+    const now = Date.now();
+    return new Date(scheduledAt).getTime() < now;
   };
+  const getStatusLabel = (scheduledAt: string) =>
+    isEventCompleted(scheduledAt) ? "COMPLETED" : "UPCOMING";
+  const getStatusClass = (scheduledAt: string) =>
+    isEventCompleted(scheduledAt) ? "bg-gray-500" : "bg-blue-500";
+
+  const filteredEvents = events.filter((e) => {
+    const matchesSearch = e.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const completed = isEventCompleted(e.scheduledAt);
+    const matchesStatus =
+      selectedStatus === "all" ||
+      (selectedStatus === "completed" && completed) ||
+      (selectedStatus === "upcoming" && !completed);
+    return matchesSearch && matchesStatus;
+  });
+  const featuredEvents = filteredEvents.slice(0, 2);
+  const regularEvents = filteredEvents; // show all in All Events
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -165,11 +94,15 @@ export default function EventsPage() {
       day: "numeric",
     });
   };
+  const formatTime = (dateString: string) =>
+    new Date(dateString).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
 
   return (
     <div className="min-h-screen bg-[#131314] text-white">
       <main className="container mx-auto px-6 py-8">
-        {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-5xl md:text-6xl font-display font-black bg-gradient-to-r from-[#809bc8] to-[#a76fb8] bg-clip-text text-transparent mb-4">
             EVENTS
@@ -180,7 +113,6 @@ export default function EventsPage() {
           </p>
         </div>
 
-        {/* Filters */}
         <Card className="bg-white/5 backdrop-blur-md border-white/10 mb-8">
           <CardContent className="p-6">
             <div className="flex flex-col md:flex-row gap-4 items-center">
@@ -202,11 +134,6 @@ export default function EventsPage() {
                   </SelectTrigger>
                   <SelectContent className="bg-[#303030] border-white/20">
                     <SelectItem value="all">All Categories</SelectItem>
-                    <SelectItem value="Football">Football</SelectItem>
-                    <SelectItem value="Basketball">Basketball</SelectItem>
-                    <SelectItem value="Cricket">Cricket</SelectItem>
-                    <SelectItem value="Multi-Sport">Multi-Sport</SelectItem>
-                    <SelectItem value="Seminar">Seminar</SelectItem>
                   </SelectContent>
                 </Select>
                 <Select
@@ -218,7 +145,6 @@ export default function EventsPage() {
                   <SelectContent className="bg-[#303030] border-white/20">
                     <SelectItem value="all">All Events</SelectItem>
                     <SelectItem value="upcoming">Upcoming</SelectItem>
-                    <SelectItem value="ongoing">Ongoing</SelectItem>
                     <SelectItem value="completed">Completed</SelectItem>
                   </SelectContent>
                 </Select>
@@ -227,8 +153,13 @@ export default function EventsPage() {
           </CardContent>
         </Card>
 
-        {/* Featured Events */}
-        {featuredEvents.length > 0 && (
+        {error && (
+          <div className="bg-red-900/40 border border-red-700 text-red-200 p-3 rounded mb-6">
+            {error}
+          </div>
+        )}
+
+        {!loading && featuredEvents.length > 0 && (
           <div className="mb-12">
             <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-2">
               <Star className="w-8 h-8 text-yellow-500" />
@@ -242,15 +173,15 @@ export default function EventsPage() {
                   <div className="relative">
                     <div className="absolute top-4 left-8">
                       <Badge
-                        className={`${getStatusColor(
-                          event.status
+                        className={`${getStatusClass(
+                          event.scheduledAt
                         )} text-white`}>
-                        {event.status.toUpperCase()}
+                        {getStatusLabel(event.scheduledAt)}
                       </Badge>
                     </div>
                     <div className="absolute top-4 right-10">
                       <Badge className="bg-gradient-to-r from-[#809bc8] to-[#a76fb8] text-white">
-                        {event.category}
+                        Event
                       </Badge>
                     </div>
                   </div>
@@ -258,33 +189,27 @@ export default function EventsPage() {
                     <h3 className="text-xl font-bold text-white mb-2">
                       {event.title}
                     </h3>
-                    <p className="text-gray-300 mb-4 line-clamp-2">
-                      {event.description}
-                    </p>
-
+                    {event.subtitle && (
+                      <p className="text-gray-300 mb-4 line-clamp-2">
+                        {event.subtitle}
+                      </p>
+                    )}
                     <div className="space-y-2 mb-4">
                       <div className="flex items-center gap-2 text-sm text-gray-300">
                         <CalendarDays className="w-4 h-4 text-[#809bc8]" />
-                        <span>{formatDate(event.date)}</span>
+                        <span>{formatDate(event.scheduledAt)}</span>
                       </div>
                       <div className="flex items-center gap-2 text-sm text-gray-300">
                         <Clock className="w-4 h-4 text-[#809bc8]" />
-                        <span>{event.time}</span>
+                        <span>{formatTime(event.scheduledAt)}</span>
                       </div>
                       <div className="flex items-center gap-2 text-sm text-gray-300">
                         <MapPin className="w-4 h-4 text-[#809bc8]" />
                         <span>{event.location}</span>
                       </div>
                       <div className="flex items-center gap-2 text-sm text-gray-300">
-                        <Users className="w-4 h-4 text-[#809bc8]" />
-                        <span>
-                          {event.participants}/{event.maxParticipants}{" "}
-                          participants
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-gray-300">
                         <Trophy className="w-4 h-4 text-[#809bc8]" />
-                        <span>Prize: {event.prize}</span>
+                        <span>Prize: {event.prize ?? "-"}</span>
                       </div>
                     </div>
                   </CardContent>
@@ -294,68 +219,69 @@ export default function EventsPage() {
           </div>
         )}
 
-        {/* Regular Events */}
-        <div>
-          <h2 className="text-3xl font-bold text-white mb-6">All Events</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {regularEvents.map((event) => (
-              <Card
-                key={event.id}
-                className="bg-white/5 backdrop-blur-md border-white/10 hover:bg-white/10 transition-all duration-300">
-                <CardHeader className="pb-3">
-                  <div className="flex justify-between items-start mb-2">
-                    <Badge
-                      className={`${getStatusColor(event.status)} text-white`}>
-                      {event.status.toUpperCase()}
-                    </Badge>
-                    <Badge
+        {!loading && (
+          <div>
+            <h2 className="text-3xl font-bold text-white mb-6">All Events</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {regularEvents.map((event) => (
+                <Card
+                  key={event.id}
+                  className="bg-white/5 backdrop-blur-md border-white/10 hover:bg-white/10 transition-all duration-300">
+                  <CardHeader className="pb-3">
+                    <div className="flex justify-between items-start mb-2">
+                      <Badge
+                        className={`${getStatusClass(
+                          event.scheduledAt
+                        )} text-white`}>
+                        {getStatusLabel(event.scheduledAt)}
+                      </Badge>
+                      <Badge
+                        variant="outline"
+                        className="border-[#809bc8] text-[#809bc8]">
+                        Event
+                      </Badge>
+                    </div>
+                    <CardTitle className="text-lg text-white">
+                      {event.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {event.subtitle && (
+                      <p className="text-gray-300 text-sm mb-4 line-clamp-2">
+                        {event.subtitle}
+                      </p>
+                    )}
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center gap-2 text-xs text-gray-400">
+                        <Calendar className="w-3 h-3" />
+                        <span>{formatDate(event.scheduledAt)}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-gray-400">
+                        <Clock className="w-3 h-3" />
+                        <span>{formatTime(event.scheduledAt)}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-gray-400">
+                        <MapPin className="w-3 h-3" />
+                        <span>{event.location}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-gray-400">
+                        <Trophy className="w-3 h-3" />
+                        <span>Prize: {event.prize ?? "-"}</span>
+                      </div>
+                    </div>
+                    <Button
                       variant="outline"
-                      className="border-[#809bc8] text-[#809bc8]">
-                      {event.category}
-                    </Badge>
-                  </div>
-                  <CardTitle className="text-lg text-white">
-                    {event.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-300 text-sm mb-4 line-clamp-2">
-                    {event.description}
-                  </p>
-
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-center gap-2 text-xs text-gray-400">
-                      <Calendar className="w-3 h-3" />
-                      <span>{formatDate(event.date)}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-400">
-                      <Clock className="w-3 h-3" />
-                      <span>{event.time}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-400">
-                      <MapPin className="w-3 h-3" />
-                      <span>{event.location}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-400">
-                      <Users className="w-3 h-3" />
-                      <span>
-                        {event.participants}/{event.maxParticipants}
-                      </span>
-                    </div>
-                  </div>
-
-                  <Button
-                    variant="outline"
-                    className="w-full border-[#809bc8] text-[#809bc8] hover:bg-[#809bc8] hover:text-white bg-transparent">
-                    Learn More
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+                      className="w-full border-[#809bc8] text-[#809bc8] hover:bg-[#809bc8] hover:text-white bg-transparent">
+                      Learn More
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
-        {filteredEvents.length === 0 && (
+        {!loading && filteredEvents.length === 0 && (
           <div className="text-center py-12">
             <Calendar className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-300 mb-2">

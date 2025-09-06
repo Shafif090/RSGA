@@ -1,7 +1,7 @@
-import prisma from "../config/prisma.js";
+const prisma = require("../config/prisma.js");
 
 // Get user dashboard data
-export const getDashboardData = async (userId) => {
+const getDashboardData = async (userId) => {
   // Get user data with hub
   const user = await prisma.user.findUnique({
     where: { id: userId },
@@ -14,45 +14,22 @@ export const getDashboardData = async (userId) => {
     throw new Error("User not found");
   }
 
-  // Get match schedule for user's hub
+  // Get upcoming matches for user's hub (home or away)
   const matches = await prisma.match.findMany({
-    where: { hubId: user.hubId },
-    orderBy: { date: "asc" },
+    where: user.hubId
+      ? {
+          OR: [{ homeHubId: user.hubId }, { awayHubId: user.hubId }],
+          scheduledAt: { gte: new Date() },
+        }
+      : { scheduledAt: { gte: new Date() } },
+    orderBy: { scheduledAt: "asc" },
+    include: { homeHub: true, awayHub: true },
     take: 5,
   });
 
-  // Get user stats
-  const stats = await prisma.stat.findMany({
-    where: { userId },
-    include: {
-      match: {
-        select: {
-          date: true,
-          teamA: true,
-          teamB: true,
-        },
-      },
-    },
-    orderBy: {
-      match: { date: "desc" },
-    },
-    take: 3,
-  });
-
-  // Get monthly stats for charts
-  const monthlyStats = await prisma.$queryRaw`
-    SELECT 
-      TO_CHAR(m.date, 'Mon') as month,
-      SUM(s.goals) as goals,
-      SUM(s.assists) as assists,
-      COUNT(s.id) as matches
-    FROM stat s
-    JOIN match m ON s.match_id = m.id
-    WHERE s.user_id = ${userId}
-      AND m.date >= NOW() - INTERVAL '12 months'
-    GROUP BY month
-    ORDER BY MIN(m.date)
-  `;
+  // No per-match stats anymore; totals live on User and admin updates them
+  const stats = [];
+  const monthlyStats = [];
 
   // Get leaderboard for user's hub
   const leaderboard = await prisma.user.findMany({
@@ -81,33 +58,21 @@ export const getDashboardData = async (userId) => {
       section: user.section,
     },
     matches: matches.map((match) => ({
-      teamA: match.teamA,
-      teamB: match.teamB,
-      date: match.date.toLocaleDateString("en-US", {
+      teamA: match.homeHub.name,
+      teamB: match.awayHub.name,
+      date: match.scheduledAt.toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",
       }),
-      time: match.time,
-    })),
-    stats: stats.map((stat) => ({
-      matchDate: stat.match.date.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
+      time: match.scheduledAt.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
       }),
-      teamA: stat.match.teamA,
-      teamB: stat.match.teamB,
-      goals: stat.goals,
-      assists: stat.assists,
-      yellowCards: stat.yellowCards,
-      redCards: stat.redCards,
-      appearance: stat.appearance,
     })),
-    monthlyStats: monthlyStats.map((stat) => ({
-      month: stat.month,
-      goals: Number(stat.goals),
-      assists: Number(stat.assists),
-      matches: Number(stat.matches),
-    })),
+    stats,
+    monthlyStats,
     leaderboard,
   };
 };
+
+module.exports = { getDashboardData };

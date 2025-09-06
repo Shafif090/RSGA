@@ -5,7 +5,8 @@ const { JWT_SECRET, JWT_EXPIRES_IN } = require("../config/env.js");
 
 // Hash password
 exports.hashPassword = async (password) => {
-  const salt = await bcrypt.genSalt(parseInt(process.env.BCRYPT_SALT_ROUNDS));
+  const rounds = parseInt(process.env.BCRYPT_SALT_ROUNDS || "10", 10);
+  const salt = await bcrypt.genSalt(rounds);
   return bcrypt.hash(password, salt);
 };
 
@@ -45,12 +46,8 @@ exports.registerUser = async (userData) => {
   if (userData.password !== userData.confirmPassword) {
     throw new Error("Passwords do not match");
   }
-  if (
-    !userData.communities ||
-    !Array.isArray(userData.communities) ||
-    userData.communities.length === 0
-  ) {
-    throw new Error("At least one community must be selected");
+  if (!Array.isArray(userData.communities)) {
+    userData.communities = [];
   }
 
   // Hash password
@@ -76,67 +73,12 @@ exports.registerUser = async (userData) => {
       facebook: userData.facebook,
       instagram: userData.instagram,
       discord: userData.discord,
+      hubId: userData.hubId || null,
+      communities: userData.communities,
+      games: Array.isArray(userData.games) ? userData.games : [],
     },
   });
-
-  // Save communities
-  for (const community of userData.communities) {
-    await prisma.userCommunity.create({
-      data: {
-        userId: user.id,
-        type: community,
-      },
-    });
-  }
-
-  // Save games (accepts IDs or names). If a name is provided and not found, create it.
-  if (userData.games && Array.isArray(userData.games)) {
-    for (const g of userData.games) {
-      let gameRecord = null;
-      const isUuid =
-        typeof g === "string" &&
-        /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
-          g
-        );
-
-      if (isUuid) {
-        gameRecord = await prisma.game.findUnique({ where: { id: g } });
-      } else {
-        gameRecord = await prisma.game.findUnique({ where: { name: g } });
-        if (!gameRecord) {
-          // Infer community type from name (fallback to ESPORTS unless it's clearly outdoor)
-          const inferredType =
-            String(g).toLowerCase() === "futsal" ? "OUTDOOR" : "ESPORTS";
-          gameRecord = await prisma.game.create({
-            data: { name: g, type: inferredType },
-          });
-        }
-      }
-
-      if (!gameRecord) {
-        // Skip invalid references silently; alternatively, throw an error
-        continue;
-      }
-
-      await prisma.userGame.create({
-        data: {
-          userId: user.id,
-          gameId: gameRecord.id,
-        },
-      });
-    }
-  }
-
-  // Save hub assignment
-  if (userData.hubId) {
-    await prisma.userHub.create({
-      data: {
-        userId: user.id,
-        hubId: userData.hubId,
-        status: "ASSIGNED",
-      },
-    });
-  }
+  // Persisted hubId, communities[], games[] on User per new schema
 
   // TODO: Implement email sending here
   console.log(`Verification token for ${user.email}: ${verificationToken}`);

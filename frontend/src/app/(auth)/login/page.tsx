@@ -31,8 +31,7 @@ export default function LoginPage() {
   };
 
   // API base URL (set NEXT_PUBLIC_API_BASE_URL in .env.local)
-  const API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5500";
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

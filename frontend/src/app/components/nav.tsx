@@ -7,8 +7,7 @@ import { blanka, poppins } from "../fonts";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRef } from "react";
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5500";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -45,7 +44,10 @@ export default function Navigation() {
   // Close dropdown on outside click
   useEffect(() => {
     function handleClick(e: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
         setShowDropdown(false);
       }
     }
@@ -99,8 +101,7 @@ export default function Navigation() {
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setShowDropdown((v) => !v)}
-              className="flex items-center px-4 py-2 border border-[#006AFF] text-[#F0F0F0] bg-[#0F1016] hover:bg-[#006AFF] hover:text-[#F0F0F0] rounded-xl transition-colors no-underline gap-2 focus:outline-none"
-            >
+              className="flex items-center px-4 py-2 border border-[#006AFF] text-[#F0F0F0] bg-[#0F1016] hover:bg-[#006AFF] hover:text-[#F0F0F0] rounded-xl transition-colors no-underline gap-2 focus:outline-none">
               <Avatar className="w-7 h-7">
                 <AvatarImage src={user.avatar || "/placeholder.svg"} />
                 <AvatarFallback>
@@ -110,8 +111,17 @@ export default function Navigation() {
                 </AvatarFallback>
               </Avatar>
               <span className="font-medium">{user.name}</span>
-              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              <svg
+                className="w-4 h-4 ml-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
               </svg>
             </button>
             {showDropdown && (
@@ -122,7 +132,8 @@ export default function Navigation() {
                     setShowDropdown(false);
                     try {
                       await fetch(
-                        (process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5500") + "/api/v1/auth/logout",
+                        (process.env.NEXT_PUBLIC_API_BASE_URL ?? "") +
+                          "/api/v1/auth/logout",
                         {
                           method: "POST",
                           credentials: "include",
@@ -130,8 +141,7 @@ export default function Navigation() {
                       );
                     } catch {}
                     window.location.href = "/";
-                  }}
-                >
+                  }}>
                   Log out
                 </button>
               </div>
@@ -277,8 +287,7 @@ export default function Navigation() {
                   <div className="relative" ref={dropdownRef}>
                     <button
                       onClick={() => setShowDropdown((v) => !v)}
-                      className="mx-10 flex items-center justify-center gap-2 px-4 py-2 border border-[#006AFF] text-[#F0F0F0] bg-[#0F1016] hover:bg-[#006AFF] hover:text-[#F0F0F0] rounded-md transition-colors duration-300 no-underline text-center focus:outline-none"
-                    >
+                      className="mx-10 flex items-center justify-center gap-2 px-4 py-2 border border-[#006AFF] text-[#F0F0F0] bg-[#0F1016] hover:bg-[#006AFF] hover:text-[#F0F0F0] rounded-md transition-colors duration-300 no-underline text-center focus:outline-none">
                       <Avatar className="w-7 h-7">
                         <AvatarImage src={user.avatar || "/placeholder.svg"} />
                         <AvatarFallback>
@@ -288,8 +297,17 @@ export default function Navigation() {
                         </AvatarFallback>
                       </Avatar>
                       <span className="font-medium">{user.name}</span>
-                      <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      <svg
+                        className="w-4 h-4 ml-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
                       </svg>
                     </button>
                     {showDropdown && (
@@ -300,7 +318,9 @@ export default function Navigation() {
                             setShowDropdown(false);
                             try {
                               await fetch(
-                                (process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5500") + "/api/v1/auth/logout",
+                                (process.env.NEXT_PUBLIC_API_BASE_URL ||
+                                  "http://localhost:5500") +
+                                  "/api/v1/auth/logout",
                                 {
                                   method: "POST",
                                   credentials: "include",
@@ -308,8 +328,7 @@ export default function Navigation() {
                               );
                             } catch {}
                             window.location.href = "/";
-                          }}
-                        >
+                          }}>
                           Log out
                         </button>
                       </div>

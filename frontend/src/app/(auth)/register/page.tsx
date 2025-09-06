@@ -33,8 +33,7 @@ const ES_GAMES = ["Minecraft", "FC Mobile", "Valorant"];
 const OUTDOOR_GAMES = ["Futsal"]; // single outdoor option for now
 
 // API base URL (set NEXT_PUBLIC_API_BASE_URL in .env.local)
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5500";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
 
 export default function RegisterPage() {
   const [currentStep, setCurrentStep] = useState(1);

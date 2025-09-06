@@ -5,7 +5,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
   User,
-  Trophy,
   Target,
   Users,
   Calendar,
@@ -19,8 +18,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 // API base URL (set NEXT_PUBLIC_API_BASE_URL in .env.local)
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5500";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
 
 // Mock user data (renamed to defaultUser)
 const defaultUser = {
@@ -45,24 +43,59 @@ const defaultUser = {
 
 // ...existing code...
 
-const upcomingMatches = [
-  { teamA: "TEAM A", teamB: "TEAM D", date: "Dec 15", time: "3:00 PM" },
-  { teamA: "TEAM D", teamB: "TEAM C", date: "Dec 18", time: "4:30 PM" },
-  { teamA: "TEAM G", teamB: "TEAM E", date: "Dec 22", time: "2:00 PM" },
-  { teamA: "TEAM C", teamB: "TEAM G", date: "Dec 25", time: "5:00 PM" },
-  { teamA: "TEAM E", teamB: "TEAM B", date: "Dec 28", time: "3:30 PM" },
-];
+type Upcoming = { teamA: string; teamB: string; date: string; time: string };
+type Recent = {
+  teamA: string;
+  teamB: string;
+  result: string;
+  status: "won" | "lost" | "draw";
+};
+type MeResponse = {
+  id: string;
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  school?: string;
+  bio?: string;
+  avatar?: string;
+  facebook?: string;
+  hubs?: { name: string }[];
+  rank?: number;
+  points?: { total: number };
+  badges?: string[];
+  totalGoals?: number;
+  totalAssists?: number;
+  totalAppearances?: number;
+  yellowCards?: number;
+  redCards?: number;
+};
 
-const recentMatches = [
-  { teamA: "TEAM A", teamB: "TEAM D", result: "2-1", status: "won" },
-  { teamA: "TEAM D", teamB: "TEAM C", result: "0-2", status: "lost" },
-  { teamA: "TEAM G", teamB: "TEAM E", result: "1-1", status: "draw" },
-];
+type FrontendUser = {
+  name: string;
+  school: string;
+  id: string;
+  rank: number;
+  hub: string;
+  bio: string;
+  avatar: string;
+  email: string;
+  phone: string;
+  facebook: string;
+  totalPoints: number;
+  badges: string[];
+  goals: number;
+  assists: number;
+  yellowCards: number;
+  redCards: number;
+  appearances: number;
+};
 
 export default function DashboardPage() {
-  const [userData, setUserData] = useState(defaultUser);
+  const [userData, setUserData] = useState<FrontendUser>(defaultUser);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [upcomingMatches, setUpcomingMatches] = useState<Upcoming[]>([]);
+  const [recentMatches, setRecentMatches] = useState<Recent[]>([]);
   const router = useRouter();
 
   // Use userData for stats, fallback to 0 if missing
@@ -92,35 +125,55 @@ export default function DashboardPage() {
           setLoading(false);
           return;
         }
-        const data = await res.json().catch(() => null);
+        const data: MeResponse | null = await res.json().catch(() => null);
         if (!data) {
           setError("No user data returned.");
           setLoading(false);
           return;
         }
         // Normalize API shape to UI model
-        const u = data.user || data;
-        const mapped = {
-          name: u.fullName || u.name || "",
+        const hasUser = (val: unknown): val is { user: Partial<MeResponse> } =>
+          typeof val === "object" &&
+          val !== null &&
+          "user" in (val as Record<string, unknown>);
+        const u = (hasUser(data) ? data.user : data) as Partial<MeResponse> & {
+          fullName?: string;
+          avatarUrl?: string;
+        };
+        const mapped: FrontendUser = {
+          name: u.fullName || "",
           school: u.school || "",
           id: u.id || "",
           rank: data.rank ?? 0,
-          hub:
-            (Array.isArray(data.hubs) && data.hubs[0]?.name) ||
-            data.primaryHub?.name ||
-            "Unassigned",
+          hub: (Array.isArray(data.hubs) && data.hubs[0]?.name) || "Unassigned",
           bio: u.bio || "",
           avatar: u.avatarUrl || "",
           email: u.email || "",
-          phone: u.phoneNumber || u.phone || "",
+          phone: u.phoneNumber || "",
           facebook: u.facebook || "",
           totalPoints: data.points?.total ?? 0,
-          badges:
-            (Array.isArray(data.games) &&
-              data.games.map((g: { name: string }) => g.name)) ||
-            [],
+          badges: Array.isArray(data.badges) ? (data.badges as string[]) : [],
+          goals: Number(data.totalGoals ?? 0),
+          assists: Number(data.totalAssists ?? 0),
+          yellowCards: Number(data.yellowCards ?? 0),
+          redCards: Number(data.redCards ?? 0),
+          appearances: Number(data.totalAppearances ?? 0),
         };
         if (isMounted) setUserData((prev) => ({ ...prev, ...mapped }));
+
+        // Load schedule (upcoming + recent)
+        const sched = await fetch(`${API_BASE_URL}/api/v1/dashboard/schedule`, {
+          credentials: "include",
+        });
+        if (sched.ok) {
+          const json = await sched.json();
+          if (isMounted) {
+            setUpcomingMatches(
+              Array.isArray(json.upcoming) ? json.upcoming : []
+            );
+            setRecentMatches(Array.isArray(json.recent) ? json.recent : []);
+          }
+        }
       } catch {
         setError("Network error. Could not load user profile.");
       } finally {
@@ -210,12 +263,6 @@ export default function DashboardPage() {
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-sm">
-                          <Trophy className="w-4 h-4 text-[#809bc8]" />
-                          <span className="text-white">
-                            Rank #{userData.rank}
-                          </span>
-                        </div>
                         <div className="flex items-center gap-2 text-sm">
                           <MapPin className="w-4 h-4 text-[#809bc8]" />
                           <span className="text-white">

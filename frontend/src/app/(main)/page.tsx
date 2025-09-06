@@ -5,8 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { garnet, poppins } from "../fonts";
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5500";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
 
 export default function Home() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

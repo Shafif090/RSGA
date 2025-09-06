@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -25,8 +24,7 @@ import {
 
 import { useEffect } from "react";
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5500";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
 
 interface LeaderboardPlayer {
   id: string;
@@ -343,13 +341,6 @@ export default function LeaderboardPage() {
             </div>
           </CardContent>
         </Card>
-
-        {/* Load More Button */}
-        <div className="text-center mt-8">
-          <Button className="bg-gradient-to-r from-[#809bc8] to-[#a76fb8] hover:from-[#7088b5] hover:to-[#9660a5] text-white px-8 py-3 rounded-lg font-medium transition-all duration-300">
-            Load More Players
-          </Button>
-        </div>
       </main>
     </div>
   );

@@ -9,6 +9,8 @@ const {
 const router = express.Router();
 
 router.options("/login", (_req, res) => res.sendStatus(204));
+router.options("/register", (_req, res) => res.sendStatus(204));
+router.post("/register", register);
 router.post("/login", login);
 router.post("/logout", logout);
 

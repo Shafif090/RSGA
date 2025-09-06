@@ -16,12 +16,6 @@ enum CommunityType {
   OUTDOOR
 }
 
-enum AssignmentStatus {
-  PENDING
-  ASSIGNED
-  REJECTED
-}
-
 enum MatchStatus {
   SCHEDULED
   COMPLETED
@@ -39,6 +33,9 @@ model User {
   password      String
   verified      Boolean   @default(false)
   verificationToken String?
+  createdAt     DateTime  @default(now())
+
+  // Profile/Meta
   school        String?
   grade         Int?
   section       String?
@@ -47,10 +44,10 @@ model User {
   instagram     String?
   discord       String?
   avatarUrl     String?
-  // Legacy/primary hub reference (optional). Multi-hub membership is tracked in UserHub.
+  // Membership
   hubId         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  communities   CommunityType[] @default([])
+  games         String[]        @default([])
   
   // Aggregated counters (optional convenience for leaderboards)
   totalGoals        Int @default(0)
@@ -60,11 +57,7 @@ model User {
   redCards          Int @default(0)
 
   // Relations
-  stats           Stat[]
   hub             Hub?      @relation(fields: [hubId], references: [id])
-  userGames       UserGame[]
-  userCommunities UserCommunity[]
-  userHubs        UserHub[]
 }
 
 model Hub {
@@ -73,93 +66,38 @@ model Hub {
   type      CommunityType
   location  String
   capacity  Int      @default(30)
-  gameId    String?
-  createdAt DateTime @default(now())
 
   // Relations
-  users     User[]   // users that set this as their primary hub (legacy)
-  matches   Match[]
-  game      Game?    @relation(fields: [gameId], references: [id])
-  userHubs  UserHub[]
+  users        User[]
+  homeMatches  Match[] @relation("HomeHub")
+  awayMatches  Match[] @relation("AwayHub")
 
   @@unique([type, name], name: "type_name")
 }
 
-model Game {
-  id        String        @id @default(uuid())
-  name      String        @unique
-  type      CommunityType
-  createdAt DateTime      @default(now())
-
-  // Relations
-  hubs      Hub[]
-  userGames UserGame[]
-}
-
-// Join table for user <-> game selections
-model UserGame {
-  id        String   @id @default(uuid())
-  userId    String
-  gameId    String
-  createdAt DateTime @default(now())
-
-  user      User     @relation(fields: [userId], references: [id])
-  game      Game     @relation(fields: [gameId], references: [id])
-
-  @@unique([userId, gameId])
-}
-
-// Tracks which communities (ESPORTS/OUTDOOR) a user joined
-model UserCommunity {
-  id        String        @id @default(uuid())
-  userId    String
-  type      CommunityType
-  createdAt DateTime      @default(now())
-
-  user      User          @relation(fields: [userId], references: [id])
-
-  @@unique([userId, type])
-}
-
-// Many-to-many between users and hubs with assignment status (capacity control)
-model UserHub {
-  id          String           @id @default(uuid())
-  userId      String
-  hubId       String
-  status      AssignmentStatus @default(PENDING)
-  assignedBy  String?
-  createdAt   DateTime         @default(now())
-
-  user        User             @relation(fields: [userId], references: [id])
-  hub         Hub              @relation(fields: [hubId], references: [id])
-
-  @@unique([userId, hubId])
-}
-
 model Match {
-  id        String   @id @default(uuid())
-  hubId     String
-  teamA     String
-  teamB     String
-  date      DateTime
-  time      String
-  status    MatchStatus @default(SCHEDULED)
-  result    String?
-  createdAt DateTime @default(now())
-  stats     Stat[]
-  hub       Hub      @relation(fields: [hubId], references: [id])
+  id          String   @id @default(uuid())
+  homeHubId   String
+  awayHubId   String
+  scheduledAt DateTime
+  status      MatchStatus @default(SCHEDULED)
+  homeScore   Int?
+  awayScore   Int?
+  resultNote  String?
+
+  homeHub Hub @relation("HomeHub", fields: [homeHubId], references: [id])
+  awayHub Hub @relation("AwayHub", fields: [awayHubId], references: [id])
 }
 
-model Stat {
+// -------------------------------
+// Events
+// -------------------------------
+model Event {
   id          String   @id @default(uuid())
-  userId      String
-  matchId     String
-  goals       Int      @default(0)
-  assists     Int      @default(0)
-  yellowCards Int      @default(0)
-  redCards    Int      @default(0)
-  appearance  Boolean  @default(false)
+  title       String
+  subtitle    String?
+  scheduledAt DateTime
+  location    String
+  prize       String?
   createdAt   DateTime @default(now())
-  user        User     @relation(fields: [userId], references: [id])
-  match       Match    @relation(fields: [matchId], references: [id])
 }
