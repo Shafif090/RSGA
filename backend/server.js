@@ -17,12 +17,15 @@ const ALLOWED_ORIGINS = [
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // allow requests with no origin (like mobile apps, curl, etc.)
+    // allow requests with no origin (like mobile apps, curl, Postman, etc.)
     if (!origin) return callback(null, true);
+
     if (ALLOWED_ORIGINS.includes(origin)) {
-      return callback(null, true);
+      callback(null, true);
+    } else {
+      console.warn("Blocked by CORS:", origin);
+      callback(null, false); // <-- don't throw, just reject
     }
-    return callback(new Error("Not allowed by CORS: " + origin));
   },
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
