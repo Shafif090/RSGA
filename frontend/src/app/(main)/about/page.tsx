@@ -19,6 +19,7 @@ import {
   Linkedin,
   ArrowRight,
 } from "lucide-react";
+import { garnet, poppins } from "../../fonts";
 
 const teamMembers = [
   {
@@ -83,17 +84,19 @@ const achievements = [
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-[#131314] text-white">
+    <div
+      className={`min-h-screen bg-[#131314] text-white ${poppins.className}`}>
       <main className="container mx-auto px-6 py-8">
         {/* Hero Section */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-6xl font-display font-black bg-gradient-to-r from-[#809bc8] to-[#a76fb8] bg-clip-text text-transparent mb-6">
+          <h1
+            className={`text-5xl md:text-6xl font-black bg-gradient-to-r from-[#809bc8] to-[#a76fb8] bg-clip-text text-transparent mb-6 ${garnet.className}`}>
             ABOUT RSGA
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Regional Sports & Gaming is a pioneering platform dedicated to
-            revolutionizing sports performance through insights and community
-            engagement.
+            Remians’ Sports & Gaming Association is a pioneering platform
+            dedicated to revolutionizing sports performance through insights and
+            community engagement.
           </p>
         </div>
 
@@ -104,7 +107,8 @@ export default function AboutPage() {
               <div className="w-12 h-12 bg-gradient-to-r from-[#809bc8] to-[#a76fb8] rounded-lg flex items-center justify-center mb-4">
                 <Target className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-xl font-bold text-white">
+              <CardTitle
+                className={`text-xl font-bold text-white ${garnet.className}`}>
                 Our Mission
               </CardTitle>
             </CardHeader>
@@ -122,7 +126,8 @@ export default function AboutPage() {
               <div className="w-12 h-12 bg-gradient-to-r from-[#809bc8] to-[#a76fb8] rounded-lg flex items-center justify-center mb-4">
                 <Eye className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-xl font-bold text-white">
+              <CardTitle
+                className={`text-xl font-bold text-white ${garnet.className}`}>
                 Our Vision
               </CardTitle>
             </CardHeader>
@@ -139,7 +144,8 @@ export default function AboutPage() {
               <div className="w-12 h-12 bg-gradient-to-r from-[#809bc8] to-[#a76fb8] rounded-lg flex items-center justify-center mb-4">
                 <Heart className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-xl font-bold text-white">
+              <CardTitle
+                className={`text-xl font-bold text-white ${garnet.className}`}>
                 Our Values
               </CardTitle>
             </CardHeader>
@@ -156,7 +162,8 @@ export default function AboutPage() {
         {/* Stats Section */}
         <Card className="bg-white/5 backdrop-blur-md border-white/10 mb-16">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-white text-center">
+            <CardTitle
+              className={`text-2xl font-bold text-white text-center ${garnet.className}`}>
               Our Impact
             </CardTitle>
           </CardHeader>
@@ -179,7 +186,8 @@ export default function AboutPage() {
 
         {/* Team Section */}
         <div className="mb-16">
-          <h2 className="text-4xl font-bold text-white text-center mb-12">
+          <h2
+            className={`text-4xl font-bold text-white text-center mb-12 ${garnet.className}`}>
             Meet Our Team
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -197,7 +205,8 @@ export default function AboutPage() {
                         .join("")}
                     </AvatarFallback>
                   </Avatar>
-                  <h3 className="text-xl font-bold text-white mb-1">
+                  <h3
+                    className={`text-xl font-bold text-white mb-1 ${garnet.className}`}>
                     {member.name}
                   </h3>
                   <Badge className="bg-gradient-to-r from-[#809bc8] to-[#a76fb8] text-white mb-3">
@@ -235,7 +244,8 @@ export default function AboutPage() {
         {/* Achievements */}
         <Card className="bg-white/5 backdrop-blur-md border-white/10 mb-16">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-white flex items-center gap-2">
+            <CardTitle
+              className={`text-2xl font-bold text-white flex items-center gap-2 ${garnet.className}`}>
               <Trophy className="w-6 h-6 text-yellow-500" />
               Our Achievements
             </CardTitle>
@@ -257,7 +267,8 @@ export default function AboutPage() {
         {/* Contact Section */}
         <Card className="bg-white/5 backdrop-blur-md border-white/10">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-white text-center">
+            <CardTitle
+              className={`text-2xl font-bold text-white text-center ${garnet.className}`}>
               Get In Touch
             </CardTitle>
             <p className="text-gray-300 text-center">

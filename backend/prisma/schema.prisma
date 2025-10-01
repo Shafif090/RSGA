@@ -101,3 +101,12 @@ model Event {
   prize       String?
   createdAt   DateTime @default(now())
 }
+
+// -------------------------------
+// Admin Emails (email-based access)
+// -------------------------------
+model AdminEmail {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}

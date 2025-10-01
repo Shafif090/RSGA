@@ -4,8 +4,6 @@ const { authenticate } = require("../middleware/auth.middleware.js");
 const { getDashboard } = require("../controllers/dashboard.controller.js");
 const router = Router();
 
-// GET /api/v1/dashboard/stats
-// Removed performance analytics endpoint
 
 // GET /api/v1/dashboard/schedule
 router.get("/schedule", async (req, res) => {
@@ -86,21 +84,8 @@ router.get("/schedule", async (req, res) => {
   }
 });
 
-// Optional: user-specific dashboard consolidated endpoint
+// user-specific dashboard consolidated endpoint
 router.get("/me", authenticate, getDashboard);
 
-// Admin/maintenance: recompute aggregates from match participants
-router.post("/recompute-aggregates", authenticate, async (_req, res) => {
-  try {
-    const users = await prisma.user.findMany({ select: { id: true } });
-    for (const u of users) {
-      // Without per-match participants, totals are admin-updated; just ensure fields exist
-      await prisma.user.update({ where: { id: u.id }, data: {} });
-    }
-    res.json({ ok: true });
-  } catch (e) {
-    res.status(500).json({ message: "Failed to recompute aggregates" });
-  }
-});
 
 module.exports = router;

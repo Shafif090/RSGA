@@ -3,7 +3,7 @@ const prisma = require("../config/prisma.js");
 
 const router = Router();
 
-// Public: list events (upcoming first, then past)
+// list events (upcoming first, then past)
 router.get("/", async (_req, res) => {
   try {
     const now = new Date();

@@ -8,7 +8,7 @@ const {
 
 const authRouter = Router();
 
-// Explicit preflight (global app.options also covers it)
+// Explicit preflight
 authRouter.options("/register", (_req, res) => res.sendStatus(204));
 
 // POST /api/v1/auth/register

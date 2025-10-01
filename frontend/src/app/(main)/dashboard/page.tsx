@@ -16,11 +16,11 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { garnet, poppins } from "../../fonts";
 
-// API base URL (set NEXT_PUBLIC_API_BASE_URL in .env.local)
+// API base URL
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
 
-// Mock user data (renamed to defaultUser)
 const defaultUser = {
   name: "",
   school: "",
@@ -40,8 +40,6 @@ const defaultUser = {
   redCards: 0,
   appearances: 0,
 };
-
-// ...existing code...
 
 type Upcoming = { teamA: string; teamB: string; date: string; time: string };
 type Recent = {
@@ -188,29 +186,141 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#131314] text-white">
-        <div className="text-xl">Loading your dashboard...</div>
+      <div
+        className={`min-h-screen bg-[#131314] text-white ${poppins.className}`}>
+        <main className="container mx-auto px-6 py-8 animate-pulse">
+          {/* Header skeleton */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+            <div className="space-y-3">
+              <div className="h-10 md:h-12 w-56 md:w-72 bg-white/10 rounded" />
+              <div className="h-4 w-40 bg-white/5 rounded" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left column skeleton */}
+            <div className="lg:col-span-2 space-y-8">
+              {/* Personal Information card skeleton */}
+              <div className="bg-white/5 backdrop-blur-md border-white/10 rounded-xl p-6">
+                <div className="flex flex-col md:flex-row gap-6">
+                  <div className="w-24 h-24 bg-white/10 rounded-full" />
+                  <div className="flex-1 space-y-4">
+                    <div className="space-y-2">
+                      <div className="h-6 w-48 bg-white/10 rounded" />
+                      <div className="h-4 w-32 bg-white/5 rounded" />
+                      <div className="h-3 w-40 bg-white/5 rounded" />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {[0, 1, 2, 3].map((i) => (
+                        <div key={i} className="space-y-2">
+                          <div className="h-4 w-36 bg-white/10 rounded" />
+                          <div className="h-4 w-44 bg-white/5 rounded" />
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex gap-2">
+                      {Array.from({ length: 4 }).map((_, i) => (
+                        <div
+                          key={i}
+                          className="h-6 w-20 bg-white/10 rounded-full"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* My Stats skeleton */}
+              <div className="bg-white/5 backdrop-blur-md border-white/10 rounded-xl p-6">
+                <div className="mb-4 h-6 w-40 bg-white/10 rounded" />
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="flex flex-col items-center bg-white/5 rounded-xl p-5">
+                      <div className="w-10 h-10 bg-white/10 rounded-full mb-2" />
+                      <div className="h-6 w-10 bg-white/10 rounded mb-1" />
+                      <div className="h-3 w-16 bg-white/5 rounded" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Recent results skeleton */}
+              <div className="bg-white/5 backdrop-blur-md border-white/10 rounded-xl p-6">
+                <div className="mb-4 h-5 w-40 bg-white/10 rounded" />
+                <div className="space-y-3">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                      <div className="space-y-2">
+                        <div className="h-4 w-56 bg-white/10 rounded" />
+                        <div className="h-3 w-24 bg-white/5 rounded" />
+                      </div>
+                      <div className="h-6 w-20 bg-white/10 rounded" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Right column skeleton */}
+            <div className="space-y-8">
+              {/* Upcoming matches skeleton */}
+              <div className="bg-white/5 backdrop-blur-md border-white/10 rounded-xl p-6">
+                <div className="mb-4 h-5 w-48 bg-white/10 rounded" />
+                <div className="space-y-3">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                      <div className="space-y-2">
+                        <div className="h-4 w-56 bg-white/10 rounded" />
+                        <div className="h-3 w-24 bg-white/5 rounded" />
+                      </div>
+                      <div className="h-6 w-20 bg-white/10 rounded" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Quick actions skeleton */}
+              <div className="bg-white/5 backdrop-blur-md border-white/10 rounded-xl p-6 space-y-3">
+                <div className="h-5 w-40 bg-white/10 rounded" />
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="h-10 bg-white/10 rounded" />
+                ))}
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
     );
   }
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#131314] text-white">
+      <div
+        className={`min-h-screen flex items-center justify-center bg-[#131314] text-white ${poppins.className}`}>
         <div className="text-xl text-red-400">{error}</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#131314] text-white">
+    <div
+      className={`min-h-screen bg-[#131314] text-white ${poppins.className}`}>
       <main className="container mx-auto px-6 py-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
           <div>
-            <h1 className="text-4xl md:text-5xl font-display font-black bg-gradient-to-r from-[#809bc8] to-[#a76fb8] bg-clip-text text-transparent mb-2">
+            <h1
+              className={`text-4xl md:text-5xl font-black bg-gradient-to-r from-[#809bc8] to-[#a76fb8] bg-clip-text text-transparent mb-2 ${garnet.className}`}>
               DASHBOARD
             </h1>
-            <p className="text-gray-300">Welcome back, {userData.name}!</p>
+            <p className="text-gray-300 text-[18px]">
+              Welcome back, {userData.name}!
+            </p>
           </div>
         </div>
 
@@ -220,7 +330,8 @@ export default function DashboardPage() {
             {/* Personal Information */}
             <Card className="bg-gradient-to-br from-[#23243a] to-[#18191f] border-0 shadow-xl">
               <CardHeader>
-                <CardTitle className="text-xl font-bold text-white flex items-center gap-2">
+                <CardTitle
+                  className={`text-xl font-bold text-white flex items-center gap-2 ${garnet.className}`}>
                   <User className="w-5 h-5" />
                   PERSONAL INFORMATION
                 </CardTitle>
@@ -288,7 +399,8 @@ export default function DashboardPage() {
             {/* My Stats */}
             <Card className="bg-gradient-to-br from-[#23243a] to-[#18191f] border-0 shadow-xl">
               <CardHeader>
-                <CardTitle className="text-2xl font-black text-white flex items-center gap-3 tracking-wide">
+                <CardTitle
+                  className={`text-2xl font-black text-white flex items-center gap-3 tracking-wide ${garnet.className}`}>
                   <Activity className="w-6 h-6 text-[#a76fb8]" />
                   MY STATS
                 </CardTitle>
@@ -355,7 +467,8 @@ export default function DashboardPage() {
             {/* RECENT RESULTS */}
             <Card className="bg-gradient-to-br from-[#23243a] to-[#18191f] border-0 shadow-xl">
               <CardHeader>
-                <CardTitle className="text-lg font-bold text-white">
+                <CardTitle
+                  className={`text-lg font-bold text-white ${garnet.className}`}>
                   RECENT RESULTS
                 </CardTitle>
               </CardHeader>
@@ -366,10 +479,12 @@ export default function DashboardPage() {
                       key={index}
                       className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
                       <div className="text-sm">
-                        <div className="font-medium text-white">
+                        <div className="font-medium text-white text-[18px]">
                           {match.teamA} vs {match.teamB}
                         </div>
-                        <div className="text-gray-400">{match.result}</div>
+                        <div className="text-gray-400 text-[14px]">
+                          {match.result}
+                        </div>
                       </div>
                       <Badge
                         className={
@@ -393,7 +508,8 @@ export default function DashboardPage() {
             {/* Upcoming Matches */}
             <Card className="bg-gradient-to-br from-[#23243a] to-[#18191f] border-0 shadow-xl">
               <CardHeader>
-                <CardTitle className="text-lg font-bold text-white">
+                <CardTitle
+                  className={`text-lg font-bold text-white ${garnet.className}`}>
                   UPCOMING MATCHES
                 </CardTitle>
               </CardHeader>
@@ -404,10 +520,10 @@ export default function DashboardPage() {
                       key={index}
                       className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
                       <div className="text-sm">
-                        <div className="font-bold text-center text-2xl text-white">
+                        <div className="font-bold text-center text-[18px] text-white">
                           {match.teamA} vs {match.teamB}
                         </div>
-                        <div className="text-gray-400 text-lg">
+                        <div className="text-gray-400 text-[14px]">
                           {match.date} • {match.time}
                         </div>
                       </div>

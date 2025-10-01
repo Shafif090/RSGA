@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { garnet, poppins } from "../../fonts";
 
 type Hub = {
   id: string;
@@ -252,12 +253,15 @@ export default function AdminPage() {
 
   if (!authorized) {
     return (
-      <div className="min-h-screen bg-[#131314] text-white flex items-center justify-center p-8">
+      <div
+        className={`min-h-screen bg-[#131314] text-white flex items-center justify-center p-8 ${poppins.className}`}>
         <div className="max-w-lg text-center space-y-4">
-          <h1 className="text-3xl font-bold">Admin Access Required</h1>
+          <h1 className={`text-3xl font-bold ${garnet.className}`}>
+            Admin Access Required
+          </h1>
           <p className="text-white">
-            You&amp;apos;re not authorized to view this page. Log in with an
-            admin account or add your email to ADMIN_EMAILS on the server.
+            You are not authorized to view this page. Log in with an admin
+            account.
           </p>
         </div>
       </div>
@@ -265,9 +269,11 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#131314] text-white">
+    <div
+      className={`min-h-screen bg-[#131314] text-white ${poppins.className}`}>
       <main className="container mx-auto px-6 py-8 space-y-8">
-        <h1 className="text-4xl font-black bg-gradient-to-r from-[#809bc8] to-[#a76fb8] bg-clip-text text-transparent">
+        <h1
+          className={`text-4xl font-black bg-gradient-to-r from-[#809bc8] to-[#a76fb8] bg-clip-text text-transparent ${garnet.className}`}>
           Admin Panel
         </h1>
 
@@ -281,7 +287,9 @@ export default function AdminPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="bg-gradient-to-br from-[#23243a] to-[#18191f] border-0">
             <CardHeader>
-              <CardTitle className="text-white">Users</CardTitle>
+              <CardTitle className={`text-white ${garnet.className}`}>
+                Users
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-white">
@@ -291,7 +299,9 @@ export default function AdminPage() {
           </Card>
           <Card className="bg-gradient-to-br from-[#23243a] to-[#18191f] border-0">
             <CardHeader>
-              <CardTitle className="text-white">Hubs</CardTitle>
+              <CardTitle className={`text-white ${garnet.className}`}>
+                Hubs
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-white">
@@ -301,7 +311,9 @@ export default function AdminPage() {
           </Card>
           <Card className="bg-gradient-to-br from-[#23243a] to-[#18191f] border-0">
             <CardHeader>
-              <CardTitle className="text-white">Matches</CardTitle>
+              <CardTitle className={`text-white ${garnet.className}`}>
+                Matches
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-white">
@@ -314,7 +326,9 @@ export default function AdminPage() {
         {/* Hubs */}
         <Card className="bg-gradient-to-br from-[#23243a] to-[#18191f] border-0">
           <CardHeader>
-            <CardTitle className="text-left text-white">Manage Hubs</CardTitle>
+            <CardTitle className={`text-left text-white ${garnet.className}`}>
+              Manage Hubs
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
@@ -393,7 +407,7 @@ export default function AdminPage() {
         {/* Matches */}
         <Card className="bg-gradient-to-br from-[#23243a] to-[#18191f] border-0">
           <CardHeader>
-            <CardTitle className="text-left text-white">
+            <CardTitle className={`text-left text-white ${garnet.className}`}>
               Manage Matches
             </CardTitle>
           </CardHeader>
@@ -624,7 +638,9 @@ export default function AdminPage() {
         {/* Users */}
         <Card className="bg-gradient-to-br from-[#23243a] to-[#18191f] border-0">
           <CardHeader>
-            <CardTitle className="text-left text-white">Manage Users</CardTitle>
+            <CardTitle className={`text-left text-white ${garnet.className}`}>
+              Manage Users
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="overflow-x-auto">
@@ -814,7 +830,7 @@ export default function AdminPage() {
         {/* Events */}
         <Card className="bg-gradient-to-br from-[#23243a] to-[#18191f] border-0">
           <CardHeader>
-            <CardTitle className="text-left text-white">
+            <CardTitle className={`text-left text-white ${garnet.className}`}>
               Manage Events
             </CardTitle>
           </CardHeader>

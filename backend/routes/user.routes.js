@@ -30,12 +30,10 @@ userRouter.get("/me", async (req, res) => {
       bio: user.bio || "",
       avatar: user.avatarUrl || "",
       facebook: user.facebook || "",
-      // Keep frontend-expected shape
       hubs: [{ name: user.hub?.name || "Unassigned" }],
-      rank: 0, // optional, not used yet
+      rank: 0, 
       points: { total: user.totalGoals * 3 + user.totalAssists },
       badges: ["Member"],
-      // Totals for dashboard UI
       totalGoals: user.totalGoals,
       totalAssists: user.totalAssists,
       totalAppearances: user.totalAppearances,

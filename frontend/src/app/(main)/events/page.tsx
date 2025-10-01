@@ -21,6 +21,7 @@ import {
   Star,
   CalendarDays,
 } from "lucide-react";
+import { garnet, poppins } from "../../fonts";
 
 type EventItem = {
   id: string;
@@ -101,10 +102,12 @@ export default function EventsPage() {
     });
 
   return (
-    <div className="min-h-screen bg-[#131314] text-white">
+    <div
+      className={`min-h-screen bg-[#131314] text-white ${poppins.className}`}>
       <main className="container mx-auto px-6 py-8">
         <div className="text-center mb-12">
-          <h1 className="text-5xl md:text-6xl font-display font-black bg-gradient-to-r from-[#809bc8] to-[#a76fb8] bg-clip-text text-transparent mb-4">
+          <h1
+            className={`text-5xl md:text-6xl font-black bg-gradient-to-r from-[#809bc8] to-[#a76fb8] bg-clip-text text-transparent mb-4 ${garnet.className}`}>
             EVENTS
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
@@ -161,7 +164,8 @@ export default function EventsPage() {
 
         {!loading && featuredEvents.length > 0 && (
           <div className="mb-12">
-            <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-2">
+            <h2
+              className={`text-3xl font-bold text-white mb-6 flex items-center gap-2 ${garnet.className}`}>
               <Star className="w-8 h-8 text-yellow-500" />
               Featured Events
             </h2>
@@ -221,7 +225,10 @@ export default function EventsPage() {
 
         {!loading && (
           <div>
-            <h2 className="text-3xl font-bold text-white mb-6">All Events</h2>
+            <h2
+              className={`text-3xl font-bold text-white mb-6 ${garnet.className}`}>
+              All Events
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {regularEvents.map((event) => (
                 <Card
@@ -284,7 +291,8 @@ export default function EventsPage() {
         {!loading && filteredEvents.length === 0 && (
           <div className="text-center py-12">
             <Calendar className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-300 mb-2">
+            <h3
+              className={`text-xl font-semibold text-gray-300 mb-2 ${garnet.className}`}>
               No events found
             </h3>
             <p className="text-gray-400">

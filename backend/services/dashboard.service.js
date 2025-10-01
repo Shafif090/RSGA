@@ -26,10 +26,7 @@ const getDashboardData = async (userId) => {
     include: { homeHub: true, awayHub: true },
     take: 5,
   });
-
-  // No per-match stats anymore; totals live on User and admin updates them
-  const stats = [];
-  const monthlyStats = [];
+  
 
   // Get leaderboard for user's hub
   const leaderboard = await prisma.user.findMany({

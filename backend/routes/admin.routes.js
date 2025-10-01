@@ -110,6 +110,29 @@ router.delete("/matches/:id", async (req, res) => {
   res.json({ ok: true });
 });
 
+// Admins management (email-based)
+router.get("/admins", async (_req, res) => {
+  const admins = await prisma.adminEmail.findMany({
+    orderBy: { createdAt: "desc" },
+  });
+  res.json({ admins });
+});
+router.post("/admins", async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ message: "email required" });
+  const admin = await prisma.adminEmail.upsert({
+    where: { email: String(email).toLowerCase() },
+    update: {},
+    create: { email: String(email).toLowerCase() },
+  });
+  res.status(201).json({ admin });
+});
+router.delete("/admins/:email", async (req, res) => {
+  const email = String(req.params.email).toLowerCase();
+  await prisma.adminEmail.delete({ where: { email } });
+  res.json({ ok: true });
+});
+
 // Events CRUD
 router.get("/events", async (_req, res) => {
   const events = await prisma.event.findMany({

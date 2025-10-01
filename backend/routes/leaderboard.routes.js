@@ -34,7 +34,7 @@ leaderboardRouter.get("/", authenticate, async (req, res) => {
       appearances: user.totalAppearances,
       yellowCards: user.yellowCards,
       redCards: user.redCards,
-      points: user.totalGoals * 3 + user.totalAssists, // simple scoring rule
+      points: user.totalGoals + user.totalAssists * 2,
     }));
 
     res.json({ leaderboard });

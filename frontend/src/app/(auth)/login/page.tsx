@@ -30,7 +30,7 @@ export default function LoginPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // API base URL (set NEXT_PUBLIC_API_BASE_URL in .env.local)
+  // API base URL
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -53,7 +53,7 @@ export default function LoginPage() {
       });
 
       if (res.ok) {
-        // Redirect to dashboard or home page
+        // Redirect to dashboard
         window.location.href = "/dashboard";
         return;
       }
@@ -92,9 +92,9 @@ export default function LoginPage() {
       {/* Shadow Effect */}
       <div className="fixed h-full right-5 w-900px shadow-[-50px_0px_100px_50px_rgba(0,0,0,0.8)] z-5" />
       {/* RSGA Text */}
-      <div className="fixed right-10 top-0 h-screen w-[130px] flex items-center justify-center z-10">
+      <div className="fixed right-6 md:right-10 top-0 h-screen w-[90px] md:w-[130px] flex items-center justify-center z-0">
         <h1
-          className={`font-display font-light text-[200px] opacity-40 text-gray-400 whitespace-nowrap ${blanka.className}`}
+          className={`font-display font-light text-[120px] md:text-[200px] opacity-40 text-gray-400 whitespace-nowrap ${blanka.className}`}
           style={{
             transform: "rotate(-90deg)",
             transformOrigin: "center center",
@@ -103,18 +103,12 @@ export default function LoginPage() {
         </h1>
       </div>
 
-      {/* Animated Rectangle */}
-      <div
-        className="fixed w-[280px] h-[280px] bg-[#29313f] rounded-[20px] animate-rect-spin z-0"
-        style={{
-          left: "calc(50% + 50px)",
-          top: "calc(55% + 50px)",
-        }}
-      />
+      {/* Animated Rectangle - smaller and slightly lower on mobile */}
+      <div className="fixed left-[calc(50%+30px)] top-[calc(65%+30px)] md:top-[calc(55%+30px)] w-[100px] h-[100px] md:w-[280px] md:h-[280px] bg-[#29313f] rounded-[20px] animate-rect-spin z-0" />
 
       {/* Form Container */}
-      <div className="relative h-screen flex items-center justify-start pl-16">
-        <div className="w-full max-w-[500px] h-auto max-h-[85vh] bg-white/5 backdrop-blur-[6.5px] border-2 border-[#303030] rounded-[10px] flex flex-col items-center justify-center overflow-y-auto">
+      <div className="relative h-screen flex items-center justify-center md:justify-start px-4 md:pl-16 py-8">
+        <div className="w-full max-w-[500px] h-auto max-h-[85vh] bg-transparent backdrop-blur-[4px] border border-white/10 rounded-[15px] flex flex-col items-center justify-center overflow-y-auto">
           <div className="w-full px-8 py-8 flex flex-col items-center">
             <h1 className="text-4xl md:text-5xl bg-gradient-to-r from-[#809bc8] to-[#a76fb8] bg-clip-text text-transparent uppercase font-bold text-center leading-tight mb-8">
               Welcome Back!

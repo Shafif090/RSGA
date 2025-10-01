@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 
 import { useEffect } from "react";
+import { garnet, poppins } from "../../fonts";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
 
@@ -37,7 +38,7 @@ interface LeaderboardPlayer {
   redCards: number;
   points: number;
   rank: number;
-  school?: string; // optional, fallback if not present
+  school?: string;
 }
 
 export default function LeaderboardPage() {
@@ -98,7 +99,6 @@ export default function LeaderboardPage() {
     }
   };
 
-  // Stats cards can be static or fetched from backend in future
   const stats = [
     { label: "Total Players", value: leaderboardData.length, icon: Users },
     { label: "Active This Week", value: "-", icon: TrendingUp },
@@ -111,25 +111,102 @@ export default function LeaderboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-white">
-        Loading leaderboard...
+      <div
+        className={`min-h-screen bg-[#131314] text-white ${poppins.className}`}>
+        <main className="container mx-auto px-6 py-8 animate-pulse">
+          {/* Header skeleton */}
+          <div className="text-center mb-12">
+            <div className="mx-auto h-12 md:h-16 w-64 md:w-96 bg-white/10 rounded-lg" />
+            <div className="mx-auto mt-4 h-5 w-80 md:w-[28rem] bg-white/5 rounded" />
+          </div>
+
+          {/* Stats skeleton */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            {[0, 1, 2].map((i) => (
+              <div
+                key={i}
+                className="bg-white/5 backdrop-blur-md border-white/10 rounded-lg p-6">
+                <div className="flex items-center space-x-4">
+                  <div className="w-10 h-10 bg-white/10 rounded-lg" />
+                  <div className="flex-1 space-y-2">
+                    <div className="h-5 w-24 bg-white/10 rounded" />
+                    <div className="h-4 w-32 bg-white/5 rounded" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Podium skeleton */}
+          <div className="bg-white/5 backdrop-blur-md border-white/10 rounded-lg mb-8">
+            <div className="p-6">
+              <div className="h-6 w-48 bg-white/10 rounded mx-auto" />
+              <div className="flex justify-center items-end space-x-8 py-8">
+                {[2, 1, 3].map((n) => (
+                  <div key={n} className="flex flex-col items-center">
+                    <div className="w-20 h-20 md:w-24 md:h-24 bg-white/10 rounded-full mb-4" />
+                    <div className="w-16 h-16 md:w-20 md:h-20 bg-white/10 rounded-full mb-3" />
+                    <div className="h-4 w-24 bg-white/10 rounded mb-2" />
+                    <div className="h-3 w-20 bg-white/5 rounded mb-2" />
+                    <div className="h-4 w-16 bg-white/10 rounded" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Filters skeleton */}
+          <div className="bg-white/5 backdrop-blur-md border-white/10 rounded-lg mb-8 p-6">
+            <div className="flex flex-col md:flex-row gap-4 items-center">
+              <div className="flex-1 h-11 bg-white/10 rounded" />
+              <div className="flex gap-4 w-full md:w-auto">
+                <div className="w-40 h-11 bg-white/10 rounded" />
+                <div className="w-40 h-11 bg-white/10 rounded" />
+              </div>
+            </div>
+          </div>
+
+          {/* List skeleton */}
+          <div className="bg-white/5 backdrop-blur-md border-white/10 rounded-lg">
+            <div className="divide-y divide-white/5">
+              {Array.from({ length: 8 }).map((_, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center justify-between p-4">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-6 h-6 bg-white/10 rounded" />
+                    <div className="w-12 h-12 bg-white/10 rounded-full" />
+                    <div className="space-y-2">
+                      <div className="h-4 w-40 bg-white/10 rounded" />
+                      <div className="h-3 w-24 bg-white/5 rounded" />
+                    </div>
+                  </div>
+                  <div className="h-5 w-10 bg-white/10 rounded" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </main>
       </div>
     );
   }
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-red-400">
+      <div
+        className={`min-h-screen flex items-center justify-center text-red-400 ${poppins.className}`}>
         {error}
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#131314] text-white">
+    <div
+      className={`min-h-screen bg-[#131314] text-white ${poppins.className}`}>
       <main className="container mx-auto px-6 py-8">
         {/* Header Section */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl md:text-6xl font-display font-black bg-gradient-to-r from-[#809bc8] to-[#a76fb8] bg-clip-text text-transparent mb-4">
+          <h1
+            className={`text-5xl md:text-6xl font-black bg-gradient-to-r from-[#809bc8] to-[#a76fb8] bg-clip-text text-transparent mb-4 ${garnet.className}`}>
             LEADERBOARD
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
@@ -160,7 +237,8 @@ export default function LeaderboardPage() {
         {/* Top 3 Podium */}
         <Card className="bg-white/5 backdrop-blur-md border-white/10 mb-8">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-center text-white">
+            <CardTitle
+              className={`text-2xl font-bold text-center text-white ${garnet.className}`}>
               🏆 Top Performers
             </CardTitle>
           </CardHeader>
@@ -294,7 +372,8 @@ export default function LeaderboardPage() {
         {/* Full Leaderboard */}
         <Card className="bg-white/5 backdrop-blur-md border-white/10">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-white flex items-center gap-2">
+            <CardTitle
+              className={`text-2xl font-bold text-white flex items-center gap-2 ${garnet.className}`}>
               <Filter className="w-6 h-6" />
               Full Rankings
             </CardTitle>
