@@ -1,0 +1,16 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+	<defs>
+		<linearGradient id="g1" x2="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(275,0,0,400,0,-200)">
+			<stop offset="0" stop-color="#809bc8"/>
+			<stop offset="1" stop-color="#a76fb8"/>
+		</linearGradient>
+	</defs>
+	<style>
+		tspan { white-space:pre } 
+		.t0 { font-size: 500px;fill:  url(#g1);font-weight: 400;font-family: "Blanka-Regular", "Blanka" } 
+	</style>
+	<text id="R" style="transform: matrix(1,0,0,1,118,456)" >
+		<tspan x="0" y="0" class="t0">R</tspan><tspan  y="0" class="t0">
+</tspan>
+	</text>
+</svg>
