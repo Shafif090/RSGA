@@ -120,6 +120,18 @@ exports.login = async (req, res) => {
 
 // Logout route to clear cookie (for completeness)
 exports.logout = (req, res) => {
-  res.clearCookie("token", { path: "/" });
+  const cookieOpts = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "none",
+    path: "/",
+  };
+
+  // Clear cookie using the same attributes used during login
+  res.clearCookie("token", cookieOpts);
+
+  // Defensive: also set an already-expired cookie to cover browser quirks
+  res.cookie("token", "", { ...cookieOpts, expires: new Date(0) });
+
   res.json({ success: true, message: "Logged out" });
 };
