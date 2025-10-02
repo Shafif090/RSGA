@@ -9,13 +9,20 @@ const adminOnly = async (req, res, next) => {
     });
     if (!user) return res.status(401).json({ message: "Unauthorized" });
 
-    // DB-based admin check (by email)
-    const adminEmail = await prisma.adminEmail.findUnique({
-      where: { email: user.email.toLowerCase() },
+    // DB-based admin check (by email, case-insensitive to tolerate mixed-case records)
+    const adminEmail = await prisma.adminEmail.findFirst({
+      where: { email: { equals: user.email, mode: "insensitive" } },
+      select: { id: true },
     });
     if (adminEmail) return next();
 
-    if (list.includes(user.email.toLowerCase())) return next();
+    // Optional: allow env-based bootstrap list (comma-separated emails)
+    const envAdmins = (process.env.ADMIN_EMAILS || "")
+      .split(",")
+      .map((e) => e.trim().toLowerCase())
+      .filter(Boolean);
+    if (envAdmins.includes(String(user.email).toLowerCase())) return next();
+
     return res.status(403).json({ message: "Admin access required" });
   } catch (e) {
     return res.status(500).json({ message: "Admin check failed" });
